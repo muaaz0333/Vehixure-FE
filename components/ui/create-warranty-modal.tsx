@@ -82,9 +82,23 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide [&>button]:hidden">
+      {/* <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide [&>button]:hidden"> */}
+      <DialogContent
+        className="
+    w-[95vw] sm:w-full
+    max-w-full sm:max-w-xl lg:max-w-2xl
+    max-h-[90vh]
+    overflow-y-auto
+    scrollbar-hide
+    px-4 sm:px-6
+    [&>button]:hidden
+  "
+      >
+
         <DialogHeader className="pb-4">
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between"> */}
+          <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+
             <DialogTitle className="text-xl font-bold">Add Warranty</DialogTitle>
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="h-4 w-4" />
@@ -113,7 +127,8 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Select an Agent Account
               </label>
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2"> */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <Input
                   value={selectedAgent ? `${selectedAgent.name} - ${selectedAgent.company}` : "No agent selected"}
                   className="flex-1 bg-gray-50"
@@ -148,7 +163,8 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                   onChange={(e) => handleInputChange('emailAddress', e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4"> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     First Name
@@ -187,7 +203,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
           <div>
             <h3 className="text-md font-semibold text-red-600 mb-3">Vehicle Details</h3>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4"> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Make
@@ -247,7 +265,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4"> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Registration Number
@@ -290,7 +310,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
           <div>
             <h3 className="text-md font-semibold text-red-600 mb-3">Installation Details</h3>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4"> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Product Installed <span className="text-red-500">*</span>
@@ -355,7 +377,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              {/* <div className="grid grid-cols-2 gap-4"> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Generator Serial Number <span className="text-red-500">*</span>
@@ -385,7 +409,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Voltage in Coupler Supply Line:
                 </label>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2"> */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+
                   <Input
                     placeholder="Ex: 34"
                     value={formData.voltageInCouplerSupplyLine}
@@ -452,7 +478,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-between pt-6 border-t">
+          {/* <div className="flex justify-between pt-6 border-t"> */}
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-6 border-t">
+
             <Button variant="outline" className="px-8">
               Save Information for Later
             </Button>

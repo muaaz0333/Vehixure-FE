@@ -11,7 +11,7 @@ export function useUsers(
 ) {
   // Only admins can view all users
   return useRoleQuery(
-    ['users', params],
+    ['users', JSON.stringify(params || {})],
     () => api.getUsers(params),
     ['admin'],
     userRole,
@@ -80,7 +80,7 @@ export function useDeleteUser() {
 // Agents and Inspectors (filtered user views)
 export function useAgents(params?: { page?: number; limit?: number }) {
   return useAuthQuery(
-    ['agents', params],
+    ['agents', JSON.stringify(params || {})],
     () => api.getAgents(params),
     {
       staleTime: 5 * 60 * 1000
@@ -90,7 +90,7 @@ export function useAgents(params?: { page?: number; limit?: number }) {
 
 export function useInspectors(params?: { page?: number; limit?: number }) {
   return useAuthQuery(
-    ['inspectors', params],
+    ['inspectors', JSON.stringify(params || {})],
     () => api.getInspectors(params),
     {
       staleTime: 5 * 60 * 1000

@@ -1,5 +1,6 @@
 "use client"
 
+import { User } from '@/lib/auth'
 import { useCurrentUser } from '@/lib/hooks/use-users'
 import { useWarranties } from '@/lib/hooks/use-warranties'
 import { useInspections } from '@/lib/hooks/use-inspections'
@@ -16,7 +17,7 @@ export function DashboardStats() {
   
   const { data: inspections, isLoading: inspectionsLoading } = useInspections(
     { limit: 5 }, // Get recent 5 inspections
-    currentUser?.role
+    (currentUser as User)?.role
   )
   
   if (userLoading) {
@@ -47,10 +48,10 @@ export function DashboardStats() {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">
-          Welcome, {currentUser.name}
+          Welcome, {(currentUser as User)?.name}
         </h1>
         <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-          {currentUser.role}
+          {(currentUser as User)?.role}
         </span>
       </div>
       
@@ -58,7 +59,7 @@ export function DashboardStats() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Warranties section - visible to agents and admins */}
-        {['admin', 'agent'].includes(currentUser.role) && (
+        {['admin', 'agent'].includes((currentUser as User)?.role || '') && (
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-4">Recent Warranties</h2>
             
@@ -68,9 +69,9 @@ export function DashboardStats() {
                   <div key={i} className="h-4 bg-gray-200 rounded animate-pulse"></div>
                 ))}
               </div>
-            ) : warranties?.data?.length > 0 ? (
+            ) : (warranties as any)?.data?.length > 0 ? (
               <div className="space-y-3">
-                {warranties.data.slice(0, 5).map((warranty: any) => (
+                {(warranties as any).data.slice(0, 5).map((warranty: any) => (
                   <div key={warranty.id} className="flex justify-between items-center">
                     <span className="text-sm">{warranty.title}</span>
                     <span className={`px-2 py-1 text-xs rounded ${
@@ -90,7 +91,7 @@ export function DashboardStats() {
         )}
         
         {/* Inspections section - visible to inspectors and admins */}
-        {['admin', 'inspector'].includes(currentUser.role) && (
+        {['admin', 'inspector'].includes((currentUser as User)?.role || '') && (
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-lg font-semibold mb-4">Recent Inspections</h2>
             
@@ -100,9 +101,9 @@ export function DashboardStats() {
                   <div key={i} className="h-4 bg-gray-200 rounded animate-pulse"></div>
                 ))}
               </div>
-            ) : inspections?.data?.length > 0 ? (
+            ) : (inspections as any)?.data?.length > 0 ? (
               <div className="space-y-3">
-                {inspections.data.slice(0, 5).map((inspection: any) => (
+                {(inspections as any).data.slice(0, 5).map((inspection: any) => (
                   <div key={inspection.id} className="flex justify-between items-center">
                     <span className="text-sm">{inspection.title}</span>
                     <span className={`px-2 py-1 text-xs rounded ${
@@ -122,25 +123,25 @@ export function DashboardStats() {
         )}
         
         {/* Admin-only stats */}
-        {currentUser.role === 'admin' && (
+        {(currentUser as User)?.role === 'admin' && (
           <div className="bg-white p-6 rounded-lg shadow md:col-span-2">
             <h2 className="text-lg font-semibold mb-4">System Overview</h2>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-2xl font-bold text-blue-600">
-                  {warranties?.total || 0}
+                  {(warranties as any)?.total || 0}
                 </div>
                 <div className="text-sm text-gray-500">Total Warranties</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-green-600">
-                  {inspections?.total || 0}
+                  {(inspections as any)?.total || 0}
                 </div>
                 <div className="text-sm text-gray-500">Total Inspections</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-purple-600">
-                  {(warranties?.total || 0) + (inspections?.total || 0)}
+                  {((warranties as any)?.total || 0) + ((inspections as any)?.total || 0)}
                 </div>
                 <div className="text-sm text-gray-500">Total Records</div>
               </div>
@@ -153,7 +154,7 @@ export function DashboardStats() {
       <div className="bg-gray-50 p-4 rounded-lg">
         <h3 className="font-medium mb-3">Quick Actions</h3>
         <div className="flex flex-wrap gap-2">
-          {currentUser.role === 'admin' && (
+          {(currentUser as User)?.role === 'admin' && (
             <>
               <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
                 Manage Users
@@ -164,13 +165,13 @@ export function DashboardStats() {
             </>
           )}
           
-          {['admin', 'agent'].includes(currentUser.role) && (
+          {['admin', 'agent'].includes((currentUser as User)?.role || '') && (
             <button className="px-3 py-1 bg-purple-600 text-white rounded text-sm hover:bg-purple-700">
               Create Warranty
             </button>
           )}
           
-          {['admin', 'inspector'].includes(currentUser.role) && (
+          {['admin', 'inspector'].includes((currentUser as User)?.role || '') && (
             <button className="px-3 py-1 bg-orange-600 text-white rounded text-sm hover:bg-orange-700">
               New Inspection
             </button>

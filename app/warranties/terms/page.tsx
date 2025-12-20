@@ -134,16 +134,17 @@ export default function TermsAndConditionsPage() {
     <div className="h-screen bg-white flex flex-col overflow-hidden">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 shrink-0">
-        <div className="flex items-center justify-between px-6 py-4">
-          <h1 className="text-2xl font-semibold text-gray-900">Terms and Conditions</h1>
-          <div className="flex items-center gap-4">
+        {/* <div className="flex items-center justify-between px-6 py-4"> */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-4 sm:px-6 py-3 sm:py-4 gap-3 lg:gap-0">
+          <h1 className="text-xl font-semibold text-gray-900">Terms and Conditions</h1>
+          {/* <div className="flex items-center gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
+                className="pl-10 w-full lg:w-64"
               />
             </div>
             <Button
@@ -156,14 +157,54 @@ export default function TermsAndConditionsPage() {
               <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
               <span className="text-sm font-medium">Anthony</span>
             </div>
+          </div> */}
+          {/* Desktop actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-64"
+              />
+            </div>
+
+            <Button
+              onClick={() => setShowAddModal(true)}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Add Terms and Conditions
+            </Button>
+
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+              <span className="text-sm font-medium">Anthony</span>
+            </div>
           </div>
+
+          {/* Mobile + Tablet search */}
+          <div className="lg:hidden relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10"
+            />
+          </div>
+
         </div>
       </div>
+
+
+
+
 
       {/* Content Area */}
       <div className="flex-1 overflow-hidden p-6 flex flex-col">
         {/* Tabs */}
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <div className="flex border-b border-gray-200">
             {tabs.map((tab) => (
               <Link
@@ -178,7 +219,31 @@ export default function TermsAndConditionsPage() {
               </Link>
             ))}
           </div>
+        </div> */}
+
+
+        {/* Tabs */}
+        <div className="mb-4 bg-white">
+          <div className="relative">
+            <div className="flex gap-6 overflow-x-auto border-b border-gray-200 px-1 sm:px-0 scrollbar-hide">
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.id}
+                  href={tab.href}
+                  className={`
+            py-3 text-sm font-medium whitespace-nowrap border-b-2
+            ${tab.active
+                      ? "text-red-600 border-red-600"
+                      : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"}
+          `}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
+
 
         {/* Terms and Conditions Section */}
         <div className="bg-white rounded-lg shadow flex flex-col flex-1 min-h-0">
@@ -257,7 +322,7 @@ export default function TermsAndConditionsPage() {
           </div>
 
           {/* Pagination */}
-          <div className="px-6 py-4 border-t border-gray-200 shrink-0">
+          {/* <div className="px-6 py-4 border-t border-gray-200 shrink-0">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-500">
                 1-10 of 5000 items
@@ -299,7 +364,40 @@ export default function TermsAndConditionsPage() {
                 <span className="text-sm text-gray-500 ml-2">Items per page</span>
               </div>
             </div>
+          </div> */}
+
+          <div className="px-4 sm:px-6 py-3 border-t border-gray-200 shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              {/* Info */}
+              <div className="text-xs sm:text-sm text-gray-500">
+                1–10 of 5000 items
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center gap-1 overflow-x-auto">
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">&laquo;</button>
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">&lsaquo;</button>
+
+                <button className="px-2 py-1 bg-red-600 text-white rounded text-xs sm:text-sm">
+                  1
+                </button>
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">2</button>
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">3</button>
+
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">&rsaquo;</button>
+                <button className="px-2 py-1 border rounded text-xs sm:text-sm">&raquo;</button>
+
+                {/* Items per page hidden on mobile */}
+                <select className="hidden sm:block ml-3 border rounded px-2 py-1 text-sm">
+                  <option>10</option>
+                  <option>25</option>
+                  <option>50</option>
+                  <option>100</option>
+                </select>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
 

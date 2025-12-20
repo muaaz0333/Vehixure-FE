@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useWarranties, useCreateWarranty } from '@/lib/hooks/use-warranties'
 import { useCurrentUser } from '@/lib/hooks/use-users'
+import { User } from '@/lib/auth'
 
 // Example component showing React Query usage with role-based access
 export function WarrantyList() {
@@ -48,8 +49,8 @@ export function WarrantyList() {
   }
   
   // Role-based UI rendering
-  const canCreateWarranty = ['admin', 'agent'].includes(currentUser.role)
-  const canViewAllWarranties = ['admin'].includes(currentUser.role)
+  const canCreateWarranty = ['admin', 'agent'].includes((currentUser as User)?.role || '')
+  const canViewAllWarranties = ['admin'].includes((currentUser as User)?.role || '')
   
   return (
     <div className="p-6">
@@ -101,7 +102,7 @@ export function WarrantyList() {
       {/* Warranties list */}
       {warranties && (
         <div className="space-y-4">
-          {warranties.data?.map((warranty: any) => (
+          {(warranties as any).data?.map((warranty: any) => (
             <div key={warranty.id} className="p-4 border rounded-lg">
               <div className="flex justify-between items-start">
                 <div>
@@ -139,7 +140,7 @@ export function WarrantyList() {
             
             <button
               onClick={() => setPage(p => p + 1)}
-              disabled={!warranties.hasMore}
+              disabled={!(warranties as any).hasMore}
               className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
             >
               Next

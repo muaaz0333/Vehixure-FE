@@ -176,7 +176,7 @@ export default function SavedFormsPage() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
           {/* Tabs */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <div className="flex border-b border-gray-200">
               {tabs.map((tab) => (
                 <Link
@@ -191,7 +191,31 @@ export default function SavedFormsPage() {
                 </Link>
               ))}
             </div>
+          </div> */}
+
+
+          {/* Tabs */}
+          <div className="mb-4 bg-white">
+            <div className="relative">
+              <div className="flex gap-6 overflow-x-auto border-b border-gray-200 px-1 sm:px-0 scrollbar-hide">
+                {tabs.map((tab) => (
+                  <Link
+                    key={tab.id}
+                    href={tab.href}
+                    className={`
+            py-3 text-sm font-medium whitespace-nowrap border-b-2
+            ${tab.active
+                        ? "text-red-600 border-red-600"
+                        : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"}
+          `}
+                  >
+                    {tab.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
+
 
           {/* Saved Forms Section */}
           <div className="bg-white rounded-lg shadow">
@@ -199,7 +223,7 @@ export default function SavedFormsPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">Saved Forms</h2>
                 <div className="flex items-center gap-4">
-                 
+
                   <select className="border border-gray-300 rounded px-3 py-2 text-sm">
                     <option>All Status</option>
                     <option>Draft</option>

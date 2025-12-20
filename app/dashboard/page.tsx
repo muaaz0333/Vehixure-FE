@@ -383,10 +383,10 @@ export default function Dashboard() {
     const [searchQuery, setSearchQuery] = useState("")
     const { user } = useAuth()
 
-    const normalize = (val) =>
+    const normalize = (val: unknown): string =>
         String(val ?? "").toLowerCase()
 
-    const matchesSearch = (item) =>
+    const matchesSearch = (item: Record<string, unknown>): boolean =>
         Object.values(item).some((v) =>
             normalize(v).includes(searchQuery.toLowerCase())
         )
@@ -400,7 +400,8 @@ export default function Dashboard() {
         <RouteGuard allowedRoles={['admin']}>
             <div className="h-screen flex flex-col">
                 {/* Header */}
-                <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 flex items-center justify-between">
+                {/* <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 flex items-center justify-between"> */}
+                <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-3 sm:py-5 flex items-center justify-between">
                     <h1 className="text-xl sm:text-xl lg:text-xl font-bold truncate">Welcome Back, {user?.name || 'Admin'}</h1>
 
                     <div className="flex items-center gap-2 sm:gap-4">

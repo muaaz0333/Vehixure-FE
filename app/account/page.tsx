@@ -147,8 +147,11 @@ export default function AccountPage() {
 
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
-      <div className="bg-white px-8 py-4 shrink-0">
-        <div className="flex items-center justify-between">
+      {/* <div className="bg-white px-8 py-4 shrink-0">
+        <div className="flex items-center justify-between"> */}
+      <div className="bg-white px-4 sm:px-6 lg:px-8 py-3 sm:py-4 shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+
           <h1 className="text-xl font-semibold text-gray-900">Account Info</h1>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
@@ -174,7 +177,14 @@ export default function AccountPage() {
         {/* ✅ Figma-accurate Statistics Section */}
         {/* Statistics Cards */}
         <div className="bg-white border border-gray-200 rounded-2xl px-8 py-6 mb-8">
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between"> */}
+          <div className="
+  flex flex-col gap-4
+  sm:grid sm:grid-cols-2 sm:gap-4
+  lg:flex lg:flex-row lg:items-center lg:justify-between lg:gap-0
+">
+
+
 
             {/* Stat 1 */}
             <Stat
@@ -189,7 +199,10 @@ export default function AccountPage() {
               bg="bg-white"
             />
 
-            <Divider />
+            <div className="hidden lg:block">
+              <Divider />
+            </div>
+
 
             {/* Stat 2 */}
             <Stat
@@ -204,7 +217,10 @@ export default function AccountPage() {
               bg="bg-white"
             />
 
-            <Divider />
+            <div className="hidden lg:block">
+              <Divider />
+            </div>
+
 
             {/* Stat 3 */}
             <Stat
@@ -219,7 +235,10 @@ export default function AccountPage() {
               bg="bg-white"
             />
 
-            <Divider />
+            <div className="hidden lg:block">
+              <Divider />
+            </div>
+
 
             {/* Stat 4 */}
             <Stat

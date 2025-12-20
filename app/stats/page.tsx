@@ -126,7 +126,7 @@ export default function StatsPage() {
 
       <div className="shrink-0">
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-3">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-4 sm:px-6 lg:px-8 py-3 gap-3 lg:gap-0">
           <h1 className="text-xl font-semibold text-gray-900">Stats</h1>
           <div className="flex items-center gap-4">
             <button className="p-2 hover:bg-gray-100 rounded-lg">
@@ -137,7 +137,7 @@ export default function StatsPage() {
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="pl-9 pr-3 py-1 w-64 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                  className="pl-9 pr-3 py-1 w-full lg:w-64 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
               </div>
             </button>

@@ -256,3 +256,10 @@ body {
     transform: translateX(0);
   }
 }
+
+@media (max-width: 640px) {
+  .pagination button {
+    padding: 4px 8px;
+    min-width: 28px;
+  }
+}

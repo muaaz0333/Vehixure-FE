@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Optional: Keep this for Webpack fallback (e.g., local dev with --webpack)
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -8,6 +9,16 @@ const nextConfig: NextConfig = {
       use: ["@svgr/webpack"],
     });
     return config;
+  },
+
+  // Add this for Turbopack compatibility
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
   },
 };
 

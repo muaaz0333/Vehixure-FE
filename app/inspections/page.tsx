@@ -176,21 +176,24 @@ export default function InspectionsPage() {
 
 
   return (
-   <div className="bg-gray-50 flex flex-col h-screen">
+    <div className="bg-gray-50 flex flex-col h-screen">
 
       {/* Header */}
       <div className="bg-white ">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
+        {/* <div className="px-6 py-4">
+          <div className="flex items-center justify-between"> */}
+        <div className="px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 lg:gap-0">
+
             <h1 className="text-xl font-semibold text-gray-900">Inspections</h1>
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3 h-3" />
                 <Input
                   placeholder="Search..."
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="pl-8 w-64"
+                  className="pl-8 w-full lg:w-64"
                 />
 
               </div>
@@ -209,7 +212,50 @@ export default function InspectionsPage() {
                 <span className="text-sm font-medium">Anthony</span>
                 <ChevronDown className="w-4 h-4 text-gray-400" />
               </div>
+            </div> */}
+
+            {/* Desktop actions */}
+            <div className="hidden lg:flex items-center gap-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-3 h-3" />
+                <Input
+                  placeholder="Search..."
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  className="pl-8 w-64"
+                />
+              </div>
+
+              <Button
+                onClick={() => setShowRecordInspection(!showRecordInspection)}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                Record Inspection
+              </Button>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">Sample Inspection Sheet</span>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                <span className="text-sm font-medium">Anthony</span>
+                <ChevronDown className="w-4 h-4 text-gray-400" />
+              </div>
             </div>
+
+            {/* Mobile + tablet search */}
+            <div className="lg:hidden relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-3 h-3" />
+              <Input
+                placeholder="Search..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="pl-8 w-full"
+              />
+            </div>
+
           </div>
         </div>
       </div>
@@ -280,7 +326,8 @@ export default function InspectionsPage() {
 
           {/* Table */}
           <div className="overflow-x-auto max-h-[56vh] overflow-auto">
-            <table className="w-full">
+            {/* <table className="w-full"> */}
+            <table className="min-w-[900px] w-full">
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">No</th>
@@ -338,7 +385,8 @@ export default function InspectionsPage() {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-6">
+          {/* <div className="flex items-center justify-between mt-6"> */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mt-6">
             <div className="text-sm text-gray-600">
               1-10 of 5000 items
             </div>
@@ -383,7 +431,7 @@ export default function InspectionsPage() {
                 </svg>
               </Button>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-2">
               <span className="text-sm text-gray-600">Items per page</span>
               <select className="border border-gray-300 rounded px-2 py-1 text-sm">
                 <option>10</option>

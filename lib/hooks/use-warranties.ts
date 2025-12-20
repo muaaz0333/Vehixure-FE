@@ -6,7 +6,7 @@ import { api } from '@/lib/api/client'
 // Example: Warranties hooks using React Query
 export function useWarranties(params?: { status?: string; page?: number; limit?: number }) {
   return useAuthQuery(
-    ['warranties', params],
+    ['warranties', JSON.stringify(params || {})],
     () => api.getWarranties(params),
     {
       staleTime: 2 * 60 * 1000, // 2 minutes

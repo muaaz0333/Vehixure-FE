@@ -11,7 +11,7 @@ export function useInspections(
 ) {
   // Only inspectors and admins can view all inspections
   return useRoleQuery(
-    ['inspections', params],
+    ['inspections', JSON.stringify(params || {})],
     () => api.getInspections(params),
     ['inspector', 'admin'],
     userRole,

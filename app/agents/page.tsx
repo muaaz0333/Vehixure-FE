@@ -11,6 +11,26 @@ import { AgentModal } from '@/components/ui/agent-modal'
 import { SuccessModal } from '@/components/ui/success-modal'
 import { Plus } from 'lucide-react'
 
+// Import AgentData type
+interface AgentData {
+  businessName: string
+  contact: string
+  streetAddress: string
+  city: string
+  state: string
+  postcode: string
+  faxNumber: string
+  personalPhoneNumber: string
+  email: string
+  username: string
+  password: string
+  installerId: string
+  agentType: string
+  productsSold: string[]
+  buyPrice: string
+  accountStatus: string
+}
+
 // Mock data for agents
 const agentsData = [
   {
@@ -273,26 +293,26 @@ export default function AgentsPage() {
     setIsAgentModalOpen(true)
   }
 
-  const handleEditAgent = (agent: unknown) => {
+  const handleEditAgent = (agent: typeof agentsData[0]) => {
     setSelectedAgent(agent)
     setModalMode('edit')
     setIsAgentModalOpen(true)
   }
 
-  const handleSaveAgent = (agentData: Record<string, string | string[]>) => {
+  const handleSaveAgent = (agentData: AgentData) => {
     if (modalMode === 'add') {
       const newAgent = {
         ...agentData,
         no: agents.length + 1,
         installerID: `Q${2136 + agents.length + 1}`,
-        status: agentData.accountStatus as string,
+        status: agentData.accountStatus,
         loginSent: 'N'
       }
       setAgents([...agents, newAgent as typeof agents[0]])
     } else {
       setAgents(agents.map(agent =>
         agent.no === selectedAgent?.no
-          ? { ...agent, ...agentData, status: agentData.accountStatus as string }
+          ? { ...agent, ...agentData, status: agentData.accountStatus }
           : agent
       ))
     }
@@ -329,31 +349,50 @@ export default function AgentsPage() {
 
 
 
+  // Transform agents data to match TableRow interface
+  const transformedAgents = filteredAgents.map(agent => ({
+    no: agent.no,
+    businessName: agent.businessName,
+    installerID: agent.installerID,
+    contact: agent.contact,
+    username: agent.username,
+    password: agent.password,
+    status: agent.status,
+    loginSent: agent.loginSent
+  }))
+
   // Use agents data directly since DataTable handles actions internally
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Page Header */}
-      <PageHeader
-        title="Agents/Inspectors"
-        showSearch
-        showAdd
-        showEdit
-        searchValue={searchTerm}
-        onSearchChange={setSearchTerm}
-        onAdd={handleAddAgent}
-        onEdit={() => {
-          if (!selectedAgent) return
-          handleEditAgent(selectedAgent)
-        }}
-      />
+      <div className=" border-b sm:border-none">
+        <PageHeader
+          title="Agents/Inspectors"
+          showSearch
+          showAdd
+          showEdit
+          searchValue={searchTerm}
+          onSearchChange={setSearchTerm}
+          onAdd={handleAddAgent}
+          onEdit={() => {
+            if (!selectedAgent) return
+            handleEditAgent(selectedAgent)
+          }}
+        />
+      </div>
+
 
 
 
       {/* Sub navigation tabs */}
-      <div className="bg-white border-b">
+      {/* <div className="bg-white border-b">
         <div className="px-6">
-          <div className="flex border-b">
+          <div className="flex border-b"> */}
+      <div className="bg-white border-b">
+        <div className="px-4 sm:px-6">
+          <div className="flex gap-4 overflow-x-auto border-b">
+
             <Link href="/agents">
               <button className="px-4 py-3 text-sm font-medium border-b-2 border-red-500 text-red-600">
                 Agents
@@ -370,8 +409,8 @@ export default function AgentsPage() {
 
       {/* Content */}
       <div className="flex-1 bg-white overflow-hidden">
-        <div className="h-full flex flex-col p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="h-full flex flex-col p-3 sm:p-6">
+          {/* <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900">Agents</h2>
             <Button
               onClick={handleAddAgent}
@@ -380,22 +419,48 @@ export default function AgentsPage() {
               <Plus className="h-4 w-4 mr-2" />
               Add Agent
             </Button>
+          </div> */}
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h2 className="hidden sm:block text-lg font-semibold text-gray-900">
+              Agents
+            </h2>
+
+            <Button
+              onClick={handleAddAgent}
+              className="hidden sm:inline-flex bg-red-600 hover:bg-red-700 text-white"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Agent
+            </Button>
           </div>
 
+
           {/* Alphabet tabs */}
-          <AlphabetTabs activeTab={activeTab} onTabChange={handleTabChange} />
+          <div className="overflow-x-auto -mx-3 px-3 py-2 border-b">
+            <AlphabetTabs
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+            />
+          </div>
+
 
           {/* Data table */}
           {/* Data table */}
-          <div className="flex-1 overflow-y-auto border border-gray-200 rounded-lg">
+          <div className="flex-1 overflow-y-auto border border-gray-200 rounded-lg [&_.pagination]:py-1 [&_.pagination]:text-xs sm:[&_.pagination]:py-3 sm:[&_.pagination]:text-sm">
             <DataTable
               columns={columns}
-              data={filteredAgents}
+              data={transformedAgents}
               title=""
               showSearch={false}
               showAdd={false}
               showEdit={false}
-              onRowEdit={handleEditAgent}
+              onRowEdit={(row) => {
+                // Find the original agent data using the row number
+                const originalAgent = filteredAgents.find(agent => agent.no === row.no)
+                if (originalAgent) {
+                  handleEditAgent(originalAgent)
+                }
+              }}
             />
           </div>
 

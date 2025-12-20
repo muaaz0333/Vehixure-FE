@@ -1,40 +1,52 @@
 'use client'
 
 import InspectorSidebar from '@/components/layouts/inspector-sidebar'
-import { User, Eye, X } from 'lucide-react'
+import { User, Eye, X, Menu } from 'lucide-react'
 import { useState } from 'react'
 
 export default function AccountPage() {
   const [showAddUserModal, setShowAddUserModal] = useState(false)
   const [showPassword1, setShowPassword1] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <InspectorSidebar />
+      <InspectorSidebar 
+        isMobileMenuOpen={isMobileMenuOpen}
+        onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      />
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col lg:ml-0">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-gray-900">Account Info</h1>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <Menu className="w-5 h-5 text-gray-600" />
+              </button>
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">Account Info</h1>
+            </div>
             
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <User className="w-4 h-4 text-gray-600" />
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <User className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
               </div>
-              <span className="text-sm text-gray-700">Inspector</span>
+              <span className="text-xs sm:text-sm text-gray-700 hidden sm:block">Inspector</span>
             </div>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-3 sm:p-6 overflow-auto">
           {/* Inspector Information Section */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Inspector Information</h2>
+          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Inspector Information</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                 <input
@@ -55,7 +67,7 @@ export default function AccountPage() {
                 />
               </div>
               
-              <div>
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
                 <input
                   type="text"
@@ -96,21 +108,21 @@ export default function AccountPage() {
               </div>
             </div>
             
-            <div className="mt-6">
+            <div className="mt-4 sm:mt-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">Number of Warranties</label>
-              <div className="bg-pink-100 border border-pink-200 rounded-lg px-3 py-2 text-sm text-red-600 font-medium">
+              <div className="bg-pink-100 border border-pink-200 rounded-lg px-3 py-2 text-sm text-red-600 font-medium w-fit">
                 24
               </div>
             </div>
           </div>
 
           {/* User Accounts Section */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 sm:mb-6">
               <h2 className="text-lg font-semibold text-gray-900">User Accounts</h2>
               <button 
                 onClick={() => setShowAddUserModal(true)}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 w-full sm:w-auto"
               >
                 Add New User
               </button>
@@ -122,7 +134,7 @@ export default function AccountPage() {
                 <h3 className="text-sm font-medium text-gray-900">User 1:</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                   <input
@@ -142,7 +154,7 @@ export default function AccountPage() {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-end gap-4">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                   <div className="relative">
@@ -159,7 +171,7 @@ export default function AccountPage() {
                     </button>
                   </div>
                 </div>
-                <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 mt-6">
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 w-full sm:w-auto">
                   Update
                 </button>
               </div>
@@ -171,7 +183,7 @@ export default function AccountPage() {
                 <h3 className="text-sm font-medium text-gray-900">User 2:</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                   <input
@@ -191,7 +203,7 @@ export default function AccountPage() {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-end gap-4">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
                   <div className="relative">
@@ -208,7 +220,7 @@ export default function AccountPage() {
                     </button>
                   </div>
                 </div>
-                <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 mt-6">
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 w-full sm:w-auto">
                   Update
                 </button>
               </div>
