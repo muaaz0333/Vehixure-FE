@@ -1,15 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AddUserModal } from "@/components/ui/add-user-modal"
 import { Eye, EyeOff } from "lucide-react"
+import { useAuth } from "@/components/providers/auth-provider"
+import { useRouter } from 'next/navigation'
 
 export default function AgentAccount() {
     const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false)
     const [showPassword1, setShowPassword1] = useState(false)
     const [showPassword2, setShowPassword2] = useState(false)
+
+    const { user, logout } = useAuth()
+    const [profileOpen, setProfileOpen] = useState(false);
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (!(e.target as HTMLElement).closest('.relative')) {
+                setProfileOpen(false)
+            }
+        }
+        document.addEventListener('click', handler)
+        return () => document.removeEventListener('click', handler)
+    }, [])
+
+
+    const router = useRouter()
+    const handleLogout = () => {
+        logout()
+        router.push('/login')
+    }
 
     return (
         <div className="h-screen flex flex-col bg-white">
@@ -17,14 +38,90 @@ export default function AgentAccount() {
             <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 flex items-center justify-between">
                 <h1 className="text-xl sm:text-2xl lg:text-xl font-bold truncate">Account Info</h1>
 
-                <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                        <span className="text-xs sm:text-sm font-medium text-gray-700">A</span>
-                    </div>
-                    <span className="font-medium text-sm sm:text-base hidden sm:block">Agent</span>
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                <div className="relative">
+                    <button
+                        onClick={() => setProfileOpen(v => !v)}
+                        className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition focus:outline-none"
+                    >
+                        {/* Avatar */}
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-semibold text-gray-700">
+                                {user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                            </span>
+                        </div>
+
+                        {/* Name */}
+                        <span className="font-medium text-md hidden sm:block max-w-[120px] truncate">
+                            {user?.fullName || user?.email || 'User'}
+                        </span>
+
+                        {/* Chevron */}
+                        <svg
+                            className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${profileOpen ? 'rotate-180' : ''
+                                }`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    {/* Dropdown */}
+                    {profileOpen && (
+                        <div className="absolute right-0 mt-3 w-64 origin-top-right rounded-xl bg-white border border-gray-200 shadow-lg z-50 animate-in fade-in zoom-in-95">
+
+                            {/* User Info */}
+                            <div className="px-4 py-3 border-b border-gray-100">
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                    {user?.fullName || 'User'}
+                                </p>
+                                <p className="text-xs text-gray-500 truncate">
+                                    {user?.email}
+                                </p>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="p-2">
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => {
+                                        setProfileOpen(false)
+                                        handleLogout()
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            setProfileOpen(false)
+                                            handleLogout()
+                                        }
+                                    }}
+                                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+               text-sm font-medium text-red-600 hover:bg-red-50
+               transition cursor-pointer select-none"
+                                >
+                                    {/* Icon */}
+                                    <svg
+                                        className="w-5 h-5 shrink-0"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"
+                                        />
+                                    </svg>
+
+                                    {/* Text */}
+                                    <span>Logout</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    )}
                 </div>
             </header>
 

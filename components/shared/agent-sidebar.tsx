@@ -17,6 +17,7 @@ import OverviewIcon from '@/public/images/overview.svg'
 import WarrantyIcon from '@/public/images/Warranty.svg'
 import InspectionIcon from '@/public/images/inspections.svg'
 import SettingsIcon from '@/public/images/settings.svg'
+import { useAuth } from '@/components/providers/auth-provider'
 
 
 const agentSidebarItems = [
@@ -49,12 +50,14 @@ interface AgentSidebarProps {
 export function AgentSidebar({ onClose }: AgentSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { user } = useAuth()
+  const { logout } = useAuth()
 
   const handleLogout = () => {
-    // Clear any authentication tokens or user data here
-    // For example: localStorage.removeItem('authToken');
-    router.push('/login')
+    logout()
+    router.push("/login")
   }
+
 
   const handleLinkClick = () => {
     // Close mobile sidebar when a link is clicked
@@ -134,14 +137,23 @@ export function AgentSidebar({ onClose }: AgentSidebarProps) {
       </nav>
 
       {/* Logout */}
-      <div className="px-6 pt-6 border-t border-gray-700">
-        <button
-          className="flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-gray-800 transition-colors w-full rounded-lg"
+      <div className="px-4 pt-6 border-t border-gray-700 shrink-0">
+        <div
+          role="button"
+          tabIndex={0}
           onClick={handleLogout}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleLogout()
+          }}
+          className="flex items-center gap-3 px-4 py-3 text-sm text-red-400
+               hover:bg-gray-800/50 transition-all duration-200
+               w-full rounded-lg mx-2 cursor-pointer"
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          <span className="truncate">Log out</span>
-        </button>
+
+          {/* text only, no button */}
+          <span className="truncate font-medium">Log out</span>
+        </div>
       </div>
     </div>
   )
