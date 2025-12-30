@@ -23,6 +23,8 @@ import WarrantyIcon from '@/public/images/Warranty.svg'
 import InspectionIcon from '@/public/images/inspections.svg'
 import StatsIcon from '@/public/images/stats.svg'
 import SettingsIcon from '@/public/images/settings.svg'
+import { LogoutButton } from '../auth/logout-button'
+
 
 
 const baseSidebarItems = [
@@ -79,14 +81,16 @@ export function Sidebar({ onClose }: SidebarProps) {
   const isErpsAdmin = user?.role === 'ERPS_ADMIN'
 
   // Build sidebar items based on user role
-  const sidebarItems = isErpsAdmin 
+  const sidebarItems = isErpsAdmin
     ? [...baseSidebarItems, adminMenuItem]
     : baseSidebarItems
 
+
+  const { logout } = useAuth()
+
   const handleLogout = () => {
-    // Clear any authentication tokens or user data here
-    // For example: localStorage.removeItem('authToken');
-    router.push('/login')
+    logout()
+    router.push("/login")
   }
 
   const handleLinkClick = () => {
@@ -169,14 +173,24 @@ export function Sidebar({ onClose }: SidebarProps) {
 
       {/* Logout */}
       <div className="px-4 pt-6 border-t border-gray-700 shrink-0">
-        <button
-          className="flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-gray-800/50 transition-all duration-200 w-full rounded-lg mx-2"
+        <div
+          role="button"
+          tabIndex={0}
           onClick={handleLogout}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') handleLogout()
+          }}
+          className="flex items-center gap-3 px-4 py-3 text-sm text-red-400
+               hover:bg-gray-800/50 transition-all duration-200
+               w-full rounded-lg mx-2 cursor-pointer"
         >
           <LogOut className="w-4 h-4 shrink-0" />
+
+          {/* text only, no button */}
           <span className="truncate font-medium">Log out</span>
-        </button>
+        </div>
       </div>
+
     </div>
   )
 }
