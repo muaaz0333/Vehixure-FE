@@ -13,7 +13,7 @@ interface Agent {
   email: string
   phone: string
   location: string
-  status: "active" | "inactive"
+  accountStatus: "Active" | "inactive"
 }
 
 interface CreateWarrantyModalProps {
@@ -33,24 +33,24 @@ const installerOptions = ["Cruiser", "Ranger", "Commodore", "CX-5", "Navara"]
 
 export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWarrantyModalProps) {
   const [formData, setFormData] = useState({
-    refStockId: "PC 135932",
+    refStockId: "",
     agentAccount: selectedAgent?.company || "",
-    companyName: "Ex: Eliza Maguire",
-    emailAddress: "Ex: Eliza Maguire",
-    firstName: "Ex: Eliza Maguire",
-    lastName: "Ex: Eliza Maguire",
-    personalPhoneNumber: "Ex: Eliza Maguire",
-    make: "Ex: TOYOTA",
-    model: "Ex: Cruiser",
-    registrationNumber: "Ex: TGI 12345",
-    billDate: "",
-    vinNumber: "Ex: P34562",
-    productInstalled: "eco-pro",
-    installerName: "Ex: Cruiser",
-    generatorSerialNumber: "Ex: TGI 12345",
+    companyName: "",
+    emailAddress: "",
+    firstName: "",
+    lastName: "",
+    personalPhoneNumber: "",
+    make: "",
+    model: "",
+    registrationNumber: "",
+    buildDate: "",
+    vinNumber: "",
+    productInstalled: "",
+    installerName: "",
+    generatorSerialNumber: "",
     generatorSerialNumber2: "",
-    voltageInCouplerSupplyLine: "Ex: 34",
-    positionOfCouplers: "Explain positions of couplers",
+    voltageInCouplerSupplyLine: "",
+    positionOfCouplers: "",
     corrosionFound: "yes",
     confirmInstallation: false
   })
@@ -116,7 +116,7 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
               value={formData.refStockId}
               onChange={(e) => handleInputChange('refStockId', e.target.value)}
               className="bg-gray-50"
-              readOnly
+              // readOnly
             />
           </div>
 
@@ -280,13 +280,13 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Bill Date
+                    Build Date
                   </label>
                   <div className="relative">
                     <Input
                       type="date"
-                      value={formData.billDate}
-                      onChange={(e) => handleInputChange('billDate', e.target.value)}
+                      value={formData.buildDate}
+                      onChange={(e) => handleInputChange('buildDate', e.target.value)}
                       className="pr-10"
                     />
                     <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />

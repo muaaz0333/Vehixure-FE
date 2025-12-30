@@ -11,8 +11,10 @@ import {
   BarChart,
   User,
   LogOut,
-  X
+  X,
+  ShieldCheck
 } from 'lucide-react'
+import { useAuth } from '@/components/providers/auth-provider'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import OverviewIcon from '@/public/images/overview.svg'
@@ -23,7 +25,7 @@ import StatsIcon from '@/public/images/stats.svg'
 import SettingsIcon from '@/public/images/settings.svg'
 
 
-const sidebarItems = [
+const baseSidebarItems = [
   {
     title: 'Overview',
     href: '/dashboard',
@@ -56,6 +58,14 @@ const sidebarItems = [
   }
 ]
 
+// Admin-only menu item
+const adminMenuItem = {
+  title: 'Admin Panel',
+  href: '/admin',
+  icon: ShieldCheck,
+  adminOnly: true
+}
+
 interface SidebarProps {
   onClose?: () => void
 }
@@ -63,6 +73,15 @@ interface SidebarProps {
 export function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const { user } = useAuth()
+
+  // Check if user is ERPS Admin
+  const isErpsAdmin = user?.role === 'ERPS_ADMIN'
+
+  // Build sidebar items based on user role
+  const sidebarItems = isErpsAdmin 
+    ? [...baseSidebarItems, adminMenuItem]
+    : baseSidebarItems
 
   const handleLogout = () => {
     // Clear any authentication tokens or user data here

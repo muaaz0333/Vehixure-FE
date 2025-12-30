@@ -130,7 +130,7 @@ export default function SavedFormsPage() {
     email: string
     phone: string
     location: string
-    status: "active" | "inactive"
+    accountStatus: "Active" | "inactive"
   } | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
 
@@ -145,7 +145,7 @@ export default function SavedFormsPage() {
     email: string
     phone: string
     location: string
-    status: "active" | "inactive"
+    accountStatus: "Active" | "inactive"
   }) => {
     setSelectedAgent(agent)
     setShowAgentModal(false)

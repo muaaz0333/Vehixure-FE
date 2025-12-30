@@ -359,8 +359,8 @@ export default function LandingPage() {
                   </div>
 
                   {/* here */}
-                  <div className="p-6 pt-8">
-                    <h3 className="text-lg font-bold mb-3">{item.title}</h3>
+                  <div className="pl-10 pt-10 pb-10 pr-6">
+                    <h3 className="text-lg font-bold mb-3 mt-5">{item.title}</h3>
                     <p className={`text-sm leading-relaxed ${active ? "text-white/90" : "text-muted-foreground"}`}>
                       {item.description}
                     </p>
@@ -454,8 +454,8 @@ export default function LandingPage() {
       </section>
 
       {/* Online Access Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-background">
-        <div className="container mx-auto max-w-4xl">
+      <section className="py-12 sm:py-16 lg:py-8 px-4 sm:px-6 bg-background">
+        <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl sm:text-3xl lg:text-4xl font-bold text-left mb-10">
             Online Access: The Platform Experience
           </h2>
@@ -475,7 +475,7 @@ export default function LandingPage() {
                     onClick={() => setExpandedFaq(isOpen ? null : idx)}
                     className="w-full flex items-center justify-between px-6 py-5 text-left"
                   >
-                    <h3 className="text-base sm:text-lg font-semibold text-black">
+                    <h3 className="lg:text-xl sm:text-lg font-semibold text-black">
                       {item.title}
                     </h3>
 
@@ -521,8 +521,8 @@ export default function LandingPage() {
 
 
       {/* FAQ Section */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 bg-background">
-        <div className="container mx-auto max-w-4xl">
+      <section className="py-12 sm:py-16 lg:py-17 px-4 sm:px-6 bg-background">
+        <div className="container mx-auto max-w-6xl">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-2">
             Frequently asked questions
           </h2>
@@ -545,7 +545,7 @@ export default function LandingPage() {
                     onClick={() => setOpenIndex(open ? null : idx)}
                     className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
                   >
-                    <span className="text-base sm:text-lg font-medium">
+                    <span className="sm:text-lg lg:text-xl font-medium">
                       {item.q}
                     </span>
 

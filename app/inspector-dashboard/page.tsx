@@ -1,8 +1,7 @@
 "use client"
 
 import InspectorSidebar from '@/components/layouts/inspector-sidebar'
-import { Search, User, Menu } from 'lucide-react'
-import { RouteGuard } from "@/components/auth/route-guard"
+import { Search, Menu } from 'lucide-react'
 import { useAuth } from "@/components/providers/auth-provider"
 import { LogoutButton } from "@/components/auth/logout-button"
 import { useState } from 'react'
@@ -12,8 +11,7 @@ export default function InspectorDashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
-    <RouteGuard allowedRoles={['inspector']}>
-      <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50">
         <InspectorSidebar 
           isMobileMenuOpen={isMobileMenuOpen}
           onMobileMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -31,7 +29,7 @@ export default function InspectorDashboard() {
                   <Menu className="w-5 h-5 text-gray-600" />
                 </button>
                 <h1 className="text-lg sm:text-2xl font-semibold text-gray-900">
-                  Welcome Back, {user?.name || 'Inspector'}
+                  Welcome Back, {user?.fullName || user?.email || 'Inspector'}
                 </h1>
               </div>
 
@@ -42,9 +40,9 @@ export default function InspectorDashboard() {
                 <Search className="w-5 h-5 text-gray-400 hidden sm:block" />
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                    <span className="text-xs font-medium text-gray-700">{user?.name?.charAt(0) || 'I'}</span>
+                    <span className="text-xs font-medium text-gray-700">{user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'I'}</span>
                   </div>
-                  <span className="text-xs sm:text-sm text-gray-700 hidden sm:block">{user?.name || 'Inspector'}</span>
+                  <span className="text-xs sm:text-sm text-gray-700 hidden sm:block">{user?.fullName || user?.email || 'Inspector'}</span>
                 </div>
               </div>
             </div>
@@ -84,6 +82,5 @@ export default function InspectorDashboard() {
           </main>
         </div>
       </div>
-    </RouteGuard>
   )
 }

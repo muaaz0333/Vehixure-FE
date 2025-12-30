@@ -2,380 +2,54 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { RouteGuard } from "@/components/auth/route-guard"
 import { useAuth } from "@/components/providers/auth-provider"
 import { LogoutButton } from "@/components/auth/logout-button"
+import { useDashboardStats } from "@/lib/hooks/use-dashboard"
 
-const warrantyData = [
-    {
-        no: 1,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 2,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 3,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 4,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 5,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 6,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 7,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 8,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 9,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-    {
-        no: 10,
-        corrosion: "No",
-        date: "Oct 15, 2023",
-        agent: "UV 4x4 - Brendale",
-        year: 2025,
-        make: "TOYOTA",
-        model: "LC300 GR SPORT",
-        rego: "667A5A",
-    },
-]
+// Dashboard data types based on backend API
+interface WarrantyItemData {
+  id: string
+  vinNumber: string
+  vehicle: string
+  ownerName: string
+  installerName: string
+  dateInstalled: string
+  verificationStatus: string
+  status: string
+  corrosionFound: boolean
+}
 
-// Mock completed inspections data
-const completedInspectionsData = [
-    {
-        no: 1,
-        inspectionId: "INS-2024-001",
-        vehicleRego: "ABC123",
-        make: "TOYOTA",
-        model: "HILUX",
-        year: 2023,
-        inspector: "John Smith",
-        completedDate: "Dec 15, 2024",
-        status: "Passed",
-        corrosionFound: "No",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 2,
-        inspectionId: "INS-2024-002",
-        vehicleRego: "DEF456",
-        make: "FORD",
-        model: "RANGER",
-        year: 2022,
-        inspector: "Sarah Johnson",
-        completedDate: "Dec 14, 2024",
-        status: "Failed",
-        corrosionFound: "Yes",
-        warrantyStatus: "Claim Pending"
-    },
-    {
-        no: 3,
-        inspectionId: "INS-2024-003",
-        vehicleRego: "GHI789",
-        make: "NISSAN",
-        model: "NAVARA",
-        year: 2024,
-        inspector: "Mike Wilson",
-        completedDate: "Dec 13, 2024",
-        status: "Passed",
-        corrosionFound: "No",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 4,
-        inspectionId: "INS-2024-004",
-        vehicleRego: "JKL012",
-        make: "ISUZU",
-        model: "D-MAX",
-        year: 2021,
-        inspector: "Emma Davis",
-        completedDate: "Dec 12, 2024",
-        status: "Passed",
-        corrosionFound: "Minor",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 5,
-        inspectionId: "INS-2024-005",
-        vehicleRego: "MNO345",
-        make: "MITSUBISHI",
-        model: "TRITON",
-        year: 2023,
-        inspector: "David Brown",
-        completedDate: "Dec 11, 2024",
-        status: "Failed",
-        corrosionFound: "Yes",
-        warrantyStatus: "Claim Approved"
-    },
-    {
-        no: 6,
-        inspectionId: "INS-2024-006",
-        vehicleRego: "PQR678",
-        make: "VW",
-        model: "AMAROK",
-        year: 2022,
-        inspector: "Lisa Anderson",
-        completedDate: "Dec 10, 2024",
-        status: "Passed",
-        corrosionFound: "No",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 7,
-        inspectionId: "INS-2024-007",
-        vehicleRego: "STU901",
-        make: "MAZDA",
-        model: "BT-50",
-        year: 2021,
-        inspector: "Robert Taylor",
-        completedDate: "Dec 09, 2024",
-        status: "Passed",
-        corrosionFound: "No",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 8,
-        inspectionId: "INS-2024-008",
-        vehicleRego: "VWX234",
-        make: "HOLDEN",
-        model: "COLORADO",
-        year: 2020,
-        inspector: "Jennifer White",
-        completedDate: "Dec 08, 2024",
-        status: "Failed",
-        corrosionFound: "Severe",
-        warrantyStatus: "Claim Processing"
-    },
-    {
-        no: 9,
-        inspectionId: "INS-2024-009",
-        vehicleRego: "YZA567",
-        make: "TOYOTA",
-        model: "LC300",
-        year: 2024,
-        inspector: "Mark Johnson",
-        completedDate: "Dec 07, 2024",
-        status: "Passed",
-        corrosionFound: "No",
-        warrantyStatus: "Active"
-    },
-    {
-        no: 10,
-        inspectionId: "INS-2024-010",
-        vehicleRego: "BCD890",
-        make: "FORD",
-        model: "EVEREST",
-        year: 2023,
-        inspector: "Amanda Clark",
-        completedDate: "Dec 06, 2024",
-        status: "Passed",
-        corrosionFound: "Minor",
-        warrantyStatus: "Active"
-    }
-]
+interface InspectionItemData {
+  id: string
+  inspectorName: string
+  inspectionDate: string
+  verificationStatus: string
+  corrosionFound: boolean
+  warrantyExtendedUntil?: string
+  warranty?: {
+    vehicleMake: string
+    vehicleModel: string
+    vehicleVin: string
+  }
+}
 
-// Mock SCI Fleet Stats data
-const sciFleetStatsData = [
-    {
-        no: 1,
-        fleetId: "FLEET-001",
-        companyName: "ABC Transport Ltd",
-        totalVehicles: 45,
-        protectedVehicles: 42,
-        inspectionsDue: 3,
-        corrosionClaims: 2,
-        activeWarranties: 40,
-        lastInspection: "Dec 10, 2024",
-        fleetManager: "John Manager",
-        status: "Active"
-    },
-    {
-        no: 2,
-        fleetId: "FLEET-002",
-        companyName: "XYZ Logistics",
-        totalVehicles: 78,
-        protectedVehicles: 75,
-        inspectionsDue: 8,
-        corrosionClaims: 1,
-        activeWarranties: 74,
-        lastInspection: "Dec 12, 2024",
-        fleetManager: "Sarah Fleet",
-        status: "Active"
-    },
-    {
-        no: 3,
-        fleetId: "FLEET-003",
-        companyName: "Coastal Delivery Co",
-        totalVehicles: 32,
-        protectedVehicles: 28,
-        inspectionsDue: 12,
-        corrosionClaims: 5,
-        activeWarranties: 23,
-        lastInspection: "Nov 28, 2024",
-        fleetManager: "Mike Ocean",
-        status: "Attention Required"
-    },
-    {
-        no: 4,
-        fleetId: "FLEET-004",
-        companyName: "Mountain Mining Corp",
-        totalVehicles: 156,
-        protectedVehicles: 150,
-        inspectionsDue: 15,
-        corrosionClaims: 8,
-        activeWarranties: 142,
-        lastInspection: "Dec 08, 2024",
-        fleetManager: "Emma Stone",
-        status: "Active"
-    },
-    {
-        no: 5,
-        fleetId: "FLEET-005",
-        companyName: "City Construction",
-        totalVehicles: 89,
-        protectedVehicles: 85,
-        inspectionsDue: 6,
-        corrosionClaims: 3,
-        activeWarranties: 82,
-        lastInspection: "Dec 14, 2024",
-        fleetManager: "David Build",
-        status: "Active"
-    },
-    {
-        no: 6,
-        fleetId: "FLEET-006",
-        companyName: "Rural Services Pty",
-        totalVehicles: 23,
-        protectedVehicles: 20,
-        inspectionsDue: 4,
-        corrosionClaims: 0,
-        activeWarranties: 20,
-        lastInspection: "Dec 05, 2024",
-        fleetManager: "Lisa Country",
-        status: "Active"
-    },
-    {
-        no: 7,
-        fleetId: "FLEET-007",
-        companyName: "Metro Taxi Services",
-        totalVehicles: 67,
-        protectedVehicles: 60,
-        inspectionsDue: 18,
-        corrosionClaims: 4,
-        activeWarranties: 56,
-        lastInspection: "Nov 25, 2024",
-        fleetManager: "Robert Drive",
-        status: "Overdue"
-    },
-    {
-        no: 8,
-        fleetId: "FLEET-008",
-        companyName: "Industrial Equipment Co",
-        totalVehicles: 134,
-        protectedVehicles: 128,
-        inspectionsDue: 9,
-        corrosionClaims: 6,
-        activeWarranties: 122,
-        lastInspection: "Dec 11, 2024",
-        fleetManager: "Jennifer Heavy",
-        status: "Active"
-    },
-    {
-        no: 9,
-        fleetId: "FLEET-009",
-        companyName: "Emergency Response Unit",
-        totalVehicles: 28,
-        protectedVehicles: 28,
-        inspectionsDue: 2,
-        corrosionClaims: 0,
-        activeWarranties: 28,
-        lastInspection: "Dec 13, 2024",
-        fleetManager: "Mark Emergency",
-        status: "Active"
-    },
-    {
-        no: 10,
-        fleetId: "FLEET-010",
-        companyName: "Agricultural Solutions",
-        totalVehicles: 41,
-        protectedVehicles: 38,
-        inspectionsDue: 7,
-        corrosionClaims: 2,
-        activeWarranties: 36,
-        lastInspection: "Dec 02, 2024",
-        fleetManager: "Amanda Farm",
-        status: "Active"
-    }
-]
+interface CorrosionWarrantyData {
+  id: string
+  vinNumber: string
+  vehicle: string
+  ownerName: string
+  installerName: string
+  dateInstalled: string
+  corrosionDetails: string
+  corrosionNotes: string
+  status: string
+}
+
+interface DashboardStatsData {
+  lastWarranties: WarrantyItemData[]
+  lastInspections: InspectionItemData[]
+  corrosionWarranties: CorrosionWarrantyData[]
+}
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState("warranties")
@@ -383,26 +57,47 @@ export default function Dashboard() {
     const [searchQuery, setSearchQuery] = useState("")
     const { user } = useAuth()
 
+    // Fetch dashboard stats from your backend API
+    const { data: dashboardData, isLoading, error } = useDashboardStats()
+
+    const dashboardStats = (dashboardData?.data as DashboardStatsData) || {
+        lastWarranties: [],
+        lastInspections: [],
+        corrosionWarranties: []
+    }
+    
+    const { lastWarranties, lastInspections, corrosionWarranties } = dashboardStats
+
     const normalize = (val: unknown): string =>
         String(val ?? "").toLowerCase()
 
-    const matchesSearch = (item: Record<string, unknown>): boolean =>
+    const matchesSearch = (item: WarrantyItemData | InspectionItemData | CorrosionWarrantyData): boolean =>
         Object.values(item).some((v) =>
             normalize(v).includes(searchQuery.toLowerCase())
         )
 
-    const filteredWarranties = warrantyData.filter(matchesSearch)
-    const filteredInspections = completedInspectionsData.filter(matchesSearch)
-    const filteredFleet = sciFleetStatsData.filter(matchesSearch)
+    const filteredWarranties = lastWarranties.filter(matchesSearch)
+    const filteredInspections = lastInspections.filter(matchesSearch)
+    const filteredCorrosionWarranties = corrosionWarranties.filter(matchesSearch)
 
+    if (error) {
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-red-600 text-lg mb-2">Error loading dashboard</div>
+                    <div className="text-gray-500">{error.message}</div>
+                </div>
+            </div>
+        )
+    }
 
     return (
-        <RouteGuard allowedRoles={['admin']}>
-            <div className="h-screen flex flex-col">
+        <div className="h-screen flex flex-col">
                 {/* Header */}
-                {/* <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 flex items-center justify-between"> */}
-                <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-3 sm:py-5 flex items-center justify-between">
-                    <h1 className="text-xl sm:text-xl lg:text-xl font-bold truncate">Welcome Back, {user?.name || 'Admin'}</h1>
+                <header className="bg-white px-4 sm:px-6 lg:px-7 py-3 sm:py-5 flex items-center justify-between">
+                    <h1 className="text-xl sm:text-xl lg:text-xl font-semibold truncate">
+                        Welcome Back, {user?.fullName || user?.email || 'User'}
+                    </h1>
 
                     <div className="flex items-center gap-2 sm:gap-4">
                         <LogoutButton />
@@ -410,9 +105,9 @@ export default function Dashboard() {
                         <div className="relative hidden sm:block">
                             <button
                                 onClick={() => setSearchOpen((v) => !v)}
-                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                                className="pt-1 hover:bg-gray-100 rounded-lg transition-colors"
                             >
-                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -433,12 +128,15 @@ export default function Dashboard() {
                             )}
                         </div>
 
-
-                        <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex items-center gap-1 sm:gap-3">
                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span className="text-xs sm:text-sm font-medium text-gray-700">{user?.name?.charAt(0) || 'A'}</span>
+                                <span className="text-xs sm:text-sm font-medium text-gray-700">
+                                    {user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                                </span>
                             </div>
-                            <span className="font-medium text-sm sm:text-base hidden sm:block">{user?.name || 'Admin'}</span>
+                            <span className="font-medium text-sm sm:text-base hidden sm:block">
+                                {user?.fullName || user?.email || 'User'}
+                            </span>
                             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
@@ -468,8 +166,8 @@ export default function Dashboard() {
                             Completed Inspections
                         </button>
                         <button
-                            onClick={() => setActiveTab("fleet")}
-                            className={`py-3 sm:py-4 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${activeTab === "fleet"
+                            onClick={() => setActiveTab("corrosion")}
+                            className={`py-3 sm:py-4 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${activeTab === "corrosion"
                                 ? "border-red-600 text-red-600"
                                 : "border-transparent text-gray-500 hover:text-gray-700"
                                 }`}
@@ -480,223 +178,271 @@ export default function Dashboard() {
                 </div>
 
                 {/* Content Section */}
-                <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-                    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                        {/* Warranties Tab */}
-                        {activeTab === "warranties" && (
-                            <>
-                                <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                                    <h2 className="text-lg sm:text-lg font-bold">Warranties</h2>
-                                    <select className="border border-gray-200 rounded px-3 py-1.5 text-sm w-full sm:w-auto">
-                                        <option>Last 10</option>
-                                        <option>Last 20</option>
-                                        <option>Last 50</option>
-                                    </select>
-                                </div>
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-4">
+                    {isLoading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <div className="text-lg">Loading dashboard data...</div>
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            {/* Warranties Tab */}
+                            {activeTab === "warranties" && (
+                                <>
+                                    <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+                                        <h2 className="text-lg sm:text-lg font-bold">Warranties</h2>
+                                        <div className="text-sm text-gray-500">
+                                            Showing {filteredWarranties.length} warranties
+                                        </div>
+                                    </div>
 
-                                <div className="overflow-x-auto">
-                                    <table className="w-full min-w-[800px]">
-                                        <thead className="bg-gray-50">
-                                            <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">No</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Date</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Agent</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Year</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Make</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Model</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Rego</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {filteredWarranties.map((warranty) => (
-                                                <tr key={warranty.no} className="hover:bg-gray-50">
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.no}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.corrosion}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.date}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.agent}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.year}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.make}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.model}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.rego}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4">
-                                                        <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
-                                                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                                            </svg>
-                                                        </Button>
-                                                    </td>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[800px]">
+                                            <thead className="bg-gray-50">
+                                                <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">VIN</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Owner</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Installer</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Installation Date</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </>
-                        )}
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200">
+                                                {filteredWarranties.map((warranty) => (
+                                                    <tr key={warranty.id} className="hover:bg-gray-50">
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-mono">
+                                                            {warranty.vinNumber}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.vehicle}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.ownerName}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.installerName}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {new Date(warranty.dateInstalled).toLocaleDateString()}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                                                warranty.verificationStatus === 'VERIFIED_ACTIVE' 
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : warranty.verificationStatus === 'DRAFT'
+                                                                    ? "bg-yellow-100 text-yellow-800"
+                                                                    : warranty.verificationStatus === 'SUBMITTED_PENDING_VERIFICATION'
+                                                                    ? "bg-blue-100 text-blue-800"
+                                                                    : "bg-gray-100 text-gray-800"
+                                                            }`}>
+                                                                {warranty.status}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.corrosionFound ? (
+                                                                <span className="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">
+                                                                    Corrosion Found
+                                                                </span>
+                                                            ) : (
+                                                                <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                                                                    No Corrosion
+                                                                </span>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                                                            <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
+                                                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                                </svg>
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        
+                                        {filteredWarranties.length === 0 && (
+                                            <div className="text-center py-12">
+                                                <div className="text-gray-500">No warranties found</div>
+                                                <p className="text-gray-400 mt-2">
+                                                    {searchQuery ? 'Try adjusting your search' : 'No warranties available'}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
 
-                        {/* Completed Inspections Tab */}
-                        {activeTab === "inspections" && (
-                            <>
-                                <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                                    <h2 className="text-lg sm:text-lg font-bold">Completed Inspections</h2>
-                                    <select className="border border-gray-200 rounded px-3 py-1.5 text-sm w-full sm:w-auto">
-                                        <option>Last 10</option>
-                                        <option>Last 20</option>
-                                        <option>Last 50</option>
-                                    </select>
-                                </div>
+                            {/* Inspections Tab */}
+                            {activeTab === "inspections" && (
+                                <>
+                                    <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+                                        <h2 className="text-lg sm:text-lg font-bold">Recent Inspections</h2>
+                                        <div className="text-sm text-gray-500">
+                                            Showing {filteredInspections.length} inspections
+                                        </div>
+                                    </div>
 
-                                <div className="overflow-x-auto">
-                                    <table className="w-full min-w-[1000px]">
-                                        <thead className="bg-gray-50">
-                                            <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">No</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspection ID</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle Rego</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Make</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Model</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspector</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Completed Date</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Warranty Status</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {filteredInspections.map((inspection) => (
-                                                <tr key={inspection.no} className="hover:bg-gray-50">
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.no}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{inspection.inspectionId}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.vehicleRego}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.make}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.model}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.inspector}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{inspection.completedDate}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${inspection.status === "Passed"
-                                                            ? "bg-green-100 text-green-800"
-                                                            : "bg-red-100 text-red-800"
-                                                            }`}>
-                                                            {inspection.status}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${inspection.corrosionFound === "No"
-                                                            ? "bg-green-100 text-green-800"
-                                                            : inspection.corrosionFound === "Minor"
-                                                                ? "bg-yellow-100 text-yellow-800"
-                                                                : "bg-red-100 text-red-800"
-                                                            }`}>
-                                                            {inspection.corrosionFound}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${inspection.warrantyStatus === "Active"
-                                                            ? "bg-green-100 text-green-800"
-                                                            : inspection.warrantyStatus === "Claim Approved"
-                                                                ? "bg-blue-100 text-blue-800"
-                                                                : "bg-yellow-100 text-yellow-800"
-                                                            }`}>
-                                                            {inspection.warrantyStatus}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4">
-                                                        <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
-                                                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                                            </svg>
-                                                        </Button>
-                                                    </td>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[1000px]">
+                                            <thead className="bg-gray-50">
+                                                <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspection ID</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspector</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspection Date</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Warranty Extended</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </>
-                        )}
-
-                        {/* SCI-FLEET Stats Tab */}
-                        {activeTab === "fleet" && (
-                            <>
-                                <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                                    <h2 className="text-lg sm:text-lg font-bold">SCI-FLEET Stats</h2>
-                                    <select className="border border-gray-200 rounded px-3 py-1.5 text-sm w-full sm:w-auto">
-                                        <option>All Fleets</option>
-                                        <option>Active Only</option>
-                                        <option>Attention Required</option>
-                                        <option>Overdue</option>
-                                    </select>
-                                </div>
-
-                                <div className="overflow-x-auto">
-                                    <table className="w-full min-w-[1200px]">
-                                        <thead className="bg-gray-50">
-                                            <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">No</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Fleet ID</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Company Name</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Total Vehicles</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Protected</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Inspections Due</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion Claims</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Active Warranties</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Last Inspection</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Fleet Manager</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-200">
-                                            {filteredFleet.map((fleet) => (
-                                                <tr key={fleet.no} className="hover:bg-gray-50">
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{fleet.no}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{fleet.fleetId}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium">{fleet.companyName}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-center">{fleet.totalVehicles}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-center">{fleet.protectedVehicles}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-center">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${fleet.inspectionsDue === 0
-                                                            ? "bg-green-100 text-green-800"
-                                                            : fleet.inspectionsDue <= 5
-                                                                ? "bg-yellow-100 text-yellow-800"
-                                                                : "bg-red-100 text-red-800"
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200">
+                                                {filteredInspections.map((inspection) => (
+                                                    <tr key={inspection.id} className="hover:bg-gray-50">
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">
+                                                            {inspection?.id ? inspection.id.substring(0, 12) + '...' : 'N/A'}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {inspection.warranty?.vehicleMake} {inspection.warranty?.vehicleModel}
+                                                            <div className="text-gray-500">VIN: {inspection.warranty?.vehicleVin}</div>
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {inspection.inspectorName}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {new Date(inspection.inspectionDate).toLocaleDateString()}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                                                inspection.verificationStatus === 'VERIFIED_ACTIVE'
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : "bg-yellow-100 text-yellow-800"
                                                             }`}>
-                                                            {fleet.inspectionsDue}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-center">{fleet.corrosionClaims}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-center">{fleet.activeWarranties}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{fleet.lastInspection}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{fleet.fleetManager}</td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${fleet.status === "Active"
-                                                            ? "bg-green-100 text-green-800"
-                                                            : fleet.status === "Attention Required"
-                                                                ? "bg-yellow-100 text-yellow-800"
-                                                                : "bg-red-100 text-red-800"
+                                                                {inspection.verificationStatus === 'VERIFIED_ACTIVE' ? 'Completed' : 'Pending'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                                                !inspection.corrosionFound
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : "bg-red-100 text-red-800"
                                                             }`}>
-                                                            {fleet.status}
-                                                        </span>
-                                                    </td>
-                                                    <td className="px-3 sm:px-6 py-3 sm:py-4">
-                                                        <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
-                                                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                                            </svg>
-                                                        </Button>
-                                                    </td>
+                                                                {inspection.corrosionFound ? 'Yes' : 'No'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {inspection.warrantyExtendedUntil 
+                                                                ? new Date(inspection.warrantyExtendedUntil).toLocaleDateString()
+                                                                : 'N/A'
+                                                            }
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                                                            <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
+                                                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                                </svg>
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        
+                                        {filteredInspections.length === 0 && (
+                                            <div className="text-center py-12">
+                                                <div className="text-gray-500">No inspections found</div>
+                                                <p className="text-gray-400 mt-2">
+                                                    {searchQuery ? 'Try adjusting your search' : 'No inspections available'}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+
+                            {/* Corrosion Warranties Tab */}
+                            {activeTab === "corrosion" && (
+                                <>
+                                    <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+                                        <h2 className="text-lg sm:text-lg font-bold">Corrosion Cases</h2>
+                                        <div className="text-sm text-gray-500">
+                                            Showing {filteredCorrosionWarranties.length} corrosion cases
+                                        </div>
+                                    </div>
+
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[1000px]">
+                                            <thead className="bg-gray-50">
+                                                <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">VIN</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Owner</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Installer</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Installation Date</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Corrosion Details</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Notes</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
+                                                    <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200">
+                                                {filteredCorrosionWarranties.map((warranty) => (
+                                                    <tr key={warranty.id} className="hover:bg-gray-50">
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-mono">
+                                                            {warranty.vinNumber}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.vehicle}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.ownerName}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.installerName}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {new Date(warranty.dateInstalled).toLocaleDateString()}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            {warranty.corrosionDetails}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm max-w-xs truncate">
+                                                            {warranty.corrosionNotes}
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                            <span className="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">
+                                                                {warranty.status}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                                                            <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
+                                                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                                </svg>
+                                                            </Button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        
+                                        {filteredCorrosionWarranties.length === 0 && (
+                                            <div className="text-center py-12">
+                                                <div className="text-gray-500">No corrosion cases found</div>
+                                                <p className="text-gray-400 mt-2">
+                                                    {searchQuery ? 'Try adjusting your search' : 'No corrosion cases available'}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
-        </RouteGuard>
     )
 }

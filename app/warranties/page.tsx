@@ -1,137 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
-import { Input } from "@/components/ui/input"
 import { DataTable } from "@/components/ui/data-table"
 import { PageHeader } from "@/components/ui/page-header"
 import { CreateWarrantyModal } from "@/components/ui/create-warranty-modal"
 import { AgentSelectionModal } from "@/components/ui/agent-selection-modal"
-import { Search } from "lucide-react"
+import { erpsApi } from "@/lib/api/client"
+import { useAuth } from "@/components/providers/auth-provider"
+import { Shield } from "lucide-react"
 
-// Mock warranty data
-const mockWarranties = [
-  {
-    id: 1,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 2,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 3,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 4,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 5,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 6,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 7,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 8,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 9,
-    corrosion: "No",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  },
-  {
-    id: 10,
-    corrosion: "Yes",
-    installDate: "08-12-2025",
-    agent: "ABB NorthSales",
-    serialNo: "EC44096",
-    year: "2023",
-    make: "VW",
-    model: "AMAROK",
-    rego: "279HE8",
-    activated: "Y"
-  }
-]
+interface WarrantyTableItem {
+  [key: string]: string | number | boolean
+}
 
 const columns = [
   { key: "id", label: "No", sortable: true },
@@ -142,7 +23,7 @@ const columns = [
   { key: "year", label: "Year", sortable: false },
   { key: "make", label: "Make", sortable: true },
   { key: "model", label: "Model", sortable: true },
-  { key: "rego", label: "Rego", sortable: false },
+  { key: "status", label: "Rego", sortable: false },
   { key: "activated", label: "Activated", sortable: false },
   { key: "action", label: "Action", sortable: false }
 ]
@@ -156,6 +37,9 @@ const tabs = [
 ]
 
 export default function WarrantiesPage() {
+  const { user } = useAuth()
+  const isErpsAdmin = user?.role === 'ERPS_ADMIN'
+  
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showAgentModal, setShowAgentModal] = useState(false)
   const [selectedAgent, setSelectedAgent] = useState<{
@@ -165,9 +49,104 @@ export default function WarrantiesPage() {
     email: string
     phone: string
     location: string
-    status: "active" | "inactive"
+    accountStatus: "Active" | "inactive"
   } | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
+  const [statusFilter, setStatusFilter] = useState("")
+  const [warranties, setWarranties] = useState<WarrantyTableItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 10,
+    total: 0,
+    totalPages: 0
+  })
+
+  // Fetch warranties from API
+  const fetchWarranties = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await erpsApi.warranties.getAll({
+        page: pagination.page,
+        limit: pagination.limit,
+        search: searchTerm,
+        status: statusFilter
+      })
+
+      console.log('API Response:', response) // Debug log
+
+      // Handle different response structures
+      // The API might return { warranties: [...] } directly or wrapped in { data: { warranties: [...] } }
+      let warrantiesArray: Array<{
+        id: string
+        customerName: string
+        companyName: string
+        vehicle: string
+        vinNumber: string
+        installerName: string
+        verificationStatus: string
+        status: string
+        corrosionFound: boolean
+        photoCount: number
+        created: string
+        verifiedAt: string | null
+        rejectionReason: string | null
+      }> = []
+
+      // Check various possible response structures
+      const responseData = response as unknown as Record<string, unknown>
+      
+      if (Array.isArray(responseData.warranties)) {
+        // Direct { warranties: [...] } structure
+        warrantiesArray = responseData.warranties as typeof warrantiesArray
+      } else if (responseData.data && typeof responseData.data === 'object') {
+        const dataObj = responseData.data as Record<string, unknown>
+        if (Array.isArray(dataObj.warranties)) {
+          // Wrapped { data: { warranties: [...] } } structure
+          warrantiesArray = dataObj.warranties as typeof warrantiesArray
+        } else if (Array.isArray(dataObj)) {
+          // { data: [...] } structure
+          warrantiesArray = dataObj as typeof warrantiesArray
+        }
+      } else if (Array.isArray(responseData.data)) {
+        warrantiesArray = responseData.data as typeof warrantiesArray
+      }
+
+      console.log('Warranties Array:', warrantiesArray) // Debug log
+      
+      // Transform API data to table format
+      const tableData: WarrantyTableItem[] = warrantiesArray.map((w, index) => ({
+        id: index + 1,
+        corrosion: w.corrosionFound ? 'Yes' : 'No',
+        installDate: w.created ? new Date(w.created).toLocaleDateString('en-AU') : '-',
+        agent: w.installerName || '-',
+        serialNo: w.vinNumber,
+        year: '-',
+        make: w.vehicle?.split(' ')[0] || '-',
+        model: w.vehicle?.split(' ').slice(1).join(' ') || '-',
+        status: w.status,
+        activated: w.status === 'ACTIVE' || w.verificationStatus === 'VERIFIED' ? 'Y' : 'N'
+      }))
+      
+      console.log('Table Data:', tableData) // Debug log
+      setWarranties(tableData)
+
+      if (response.pagination) {
+        setPagination(response.pagination)
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch warranties')
+      console.error('Error fetching warranties:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [pagination.page, pagination.limit, searchTerm, statusFilter])
+
+  useEffect(() => {
+    fetchWarranties()
+  }, [fetchWarranties])
 
   const handleCreateWarranty = () => {
     setShowAgentModal(true)
@@ -180,18 +159,22 @@ export default function WarrantiesPage() {
     email: string
     phone: string
     location: string
-    status: "active" | "inactive"
+    accountStatus: "Active" | "inactive"
   }) => {
     setSelectedAgent(agent)
     setShowAgentModal(false)
     setShowCreateModal(true)
   }
 
-  const filteredWarranties = mockWarranties.filter(warranty =>
-    Object.values(warranty).some(value =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  )
+  const handleSearch = (value: string) => {
+    setSearchTerm(value)
+    setPagination(prev => ({ ...prev, page: 1 }))
+  }
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusFilter(e.target.value)
+    setPagination(prev => ({ ...prev, page: 1 }))
+  }
 
   return (
     <div className="h-screen flex flex-col bg-white">
@@ -201,34 +184,14 @@ export default function WarrantiesPage() {
           title="Warranties"
           showSearch
           searchValue={searchTerm}
-          onSearchChange={setSearchTerm}
+          onSearchChange={handleSearch}
           onAdd={handleCreateWarranty}
         />
-
       </div>
 
       {/* Content Area */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
-          {/* Tabs */}
-          {/* <div className="mb-6 bg-white">
-            <div className="flex border-b border-gray-200">
-              {tabs.map((tab) => (
-                <Link
-                  key={tab.id}
-                  href={tab.href}
-                  className={`px-4 py-2 text-sm font-medium border-b-2 ${tab.active
-                    ? "text-red-600 border-red-600"
-                    : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
-                    }`}
-                >
-                  {tab.label}
-                </Link>
-              ))}
-            </div>
-          </div> */}
-
-
           {/* Tabs */}
           <div className="mb-4 bg-white">
             <div className="relative">
@@ -238,11 +201,11 @@ export default function WarrantiesPage() {
                     key={tab.id}
                     href={tab.href}
                     className={`
-            py-3 text-sm font-medium whitespace-nowrap border-b-2
-            ${tab.active
+                      py-3 text-sm font-medium whitespace-nowrap border-b-2
+                      ${tab.active
                         ? "text-red-600 border-red-600"
                         : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"}
-          `}
+                    `}
                   >
                     {tab.label}
                   </Link>
@@ -251,28 +214,57 @@ export default function WarrantiesPage() {
             </div>
           </div>
 
-
           {/* Warranties Section */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-4 border-b border-gray-200">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Warranties</h2>
                 <div className="flex items-center gap-4">
-
-                  <select className="border border-gray-300 rounded px-3 py-2 text-sm">
-                    <option>All</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
+                  {isErpsAdmin && (
+                    <Link 
+                      href="/admin/warranties"
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                    >
+                      <Shield className="h-4 w-4" />
+                      Admin Verification
+                    </Link>
+                  )}
+                  <select 
+                    className="border border-gray-300 rounded px-3 py-2 text-sm"
+                    value={statusFilter}
+                    onChange={handleStatusChange}
+                  >
+                    <option value="">All</option>
+                    <option value="VERIFIED_ACTIVE">Active</option>
+                    <option value="DRAFT">Draft</option>
+                    <option value="SUBMITTED_PENDING_VERIFICATION">Pending</option>
                   </select>
                 </div>
               </div>
             </div>
 
-            <DataTable
-              data={filteredWarranties}
-              columns={columns}
-              itemsPerPage={10}
-            />
+            {loading ? (
+              <div className="flex justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <span className="ml-3 text-gray-600">Loading warranties...</span>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <div className="text-red-600 mb-2">{error}</div>
+                <button 
+                  onClick={fetchWarranties}
+                  className="text-blue-600 hover:underline"
+                >
+                  Try again
+                </button>
+              </div>
+            ) : (
+              <DataTable
+                data={warranties}
+                columns={columns}
+                itemsPerPage={pagination.limit}
+              />
+            )}
           </div>
         </div>
 
@@ -291,6 +283,5 @@ export default function WarrantiesPage() {
         />
       </div>
     </div>
-
   )
 }

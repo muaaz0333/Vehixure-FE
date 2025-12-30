@@ -15,7 +15,7 @@ export default function ActivateWarrantyPage() {
 
   return (
     <div className="px-4 sm:px-6 py-8 sm:py-12 lg:py-16 bg-white">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <h1 className="text-xl sm:text-2xl font-semibold text-left mb-6 sm:mb-12">
           Activate Warranty
         </h1>
@@ -40,7 +40,7 @@ export default function ActivateWarrantyPage() {
 
           <Button
             type="submit"
-            className="w-full h-10 sm:h-12 bg-[#FF2D20] hover:bg-[#FF2D20]/90 text-white rounded-lg font-medium text-sm sm:text-base"
+            className="w-full h-10 sm:h-12 bg-[#ED1C24] hover:bg-[#FF2D20]/95 text-white rounded-lg font-medium text-sm sm:text-base"
           >
             Submit
           </Button>

@@ -1,17 +1,15 @@
 "use client"
 
-import { RouteGuard } from "@/components/auth/route-guard"
 import { useAuth } from "@/components/providers/auth-provider"
 import { LogoutButton } from "@/components/auth/logout-button"
 
 export default function AgentDashboard() {
     const { user } = useAuth()
     return (
-        <RouteGuard allowedRoles={['agent']}>
         <div>
             {/* Header */}
             <header className="bg-white border-b border-gray-200 px-4 sm:px-6 lg:px-7 py-4 sm:py-5 flex items-center justify-between">
-                <h1 className="text-xl sm:text-xl lg:text-xl font-bold truncate">Welcome Back, {user?.name || 'Agent'}</h1>
+                <h1 className="text-xl sm:text-xl lg:text-xl font-bold truncate">Welcome Back, {user?.fullName || user?.email || 'Agent'}</h1>
 
                 <div className="flex items-center gap-2 sm:gap-4">
                     <LogoutButton />
@@ -29,9 +27,9 @@ export default function AgentDashboard() {
 
                     <div className="flex items-center gap-2 sm:gap-3">
                         <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span className="text-xs sm:text-sm font-medium text-gray-700">{user?.name?.charAt(0) || 'A'}</span>
+                            <span className="text-xs sm:text-sm font-medium text-gray-700">{user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'A'}</span>
                         </div>
-                        <span className="font-medium text-sm sm:text-base hidden sm:block">{user?.name || 'Agent'}</span>
+                        <span className="font-medium text-sm sm:text-base hidden sm:block">{user?.fullName || user?.email || 'Agent'}</span>
                         <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
@@ -125,6 +123,5 @@ export default function AgentDashboard() {
                 </div>
             </div>
         </div>
-        </RouteGuard>
     )
 }

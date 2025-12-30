@@ -1,7 +1,7 @@
 "use client"
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { User, UserRole } from '@/lib/auth'
+import { User, SystemRole } from '@/lib/auth'
 
 // Auth-aware query hook that automatically handles authentication
 export function useAuthQuery<T>(
@@ -33,8 +33,8 @@ export function useAuthQuery<T>(
 export function useRoleQuery<T>(
   key: string[],
   fetcher: () => Promise<T>,
-  requiredRoles: UserRole[],
-  currentUserRole?: UserRole,
+  requiredRoles: SystemRole[],
+  currentUserRole?: SystemRole,
   options?: {
     staleTime?: number
     refetchOnWindowFocus?: boolean

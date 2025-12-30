@@ -2,6 +2,7 @@
 
 import { Search, Plus, Edit, ChevronDown } from 'lucide-react'
 import { Button } from './button'
+import Image from 'next/image'
 
 interface PageHeaderProps {
   title: string
@@ -25,7 +26,7 @@ export function PageHeader({
   onSearchChange
 }: PageHeaderProps) {
   return (
-    <div className="bg-white border-b px-4 sm:px-6 py-3">
+    <div className="bg-white  px-4 sm:px-6 py-3">
       {/* Top row */}
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-base sm:text-xl font-semibold text-gray-900 truncate">
@@ -42,14 +43,14 @@ export function PageHeader({
                 placeholder="Search..."
                 value={searchValue}
                 onChange={(e) => onSearchChange?.(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-64"
+                className="pl-10 pr-4 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-64"
               />
             </div>
           )}
 
           {showAdd && (
-            <Button onClick={onAdd} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2">
-              <Plus className="w-4 h-4 mr-2" />
+            <Button onClick={onAdd} className="bg-red-600 hover:bg-red-700 text-white px-4 py-1">
+              <Image src="/images/add.svg" className='stroke-white' alt="Add" width={17} height={17} />
               Add
             </Button>
           )}
@@ -59,7 +60,7 @@ export function PageHeader({
               onClick={onEdit}
               disabled={!onEdit}
               variant="outline"
-              className="border-gray-200 px-4 py-2"
+              className="border-gray-200 px-4 py-1"
             >
               <Edit className="w-4 h-4 mr-2" />
               Edit

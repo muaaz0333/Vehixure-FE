@@ -1,66 +1,100 @@
 "use client"
 
-import { useAuthQuery, useAuthMutation } from './use-auth-query'
-import { api } from '@/lib/api/client'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { erpsApi, Warranty } from '@/lib/api/client'
 
-// Example: Warranties hooks using React Query
-export function useWarranties(params?: { status?: string; page?: number; limit?: number }) {
-  return useAuthQuery(
-    ['warranties', JSON.stringify(params || {})],
-    () => api.getWarranties(params),
-    {
-      staleTime: 2 * 60 * 1000, // 2 minutes
-      refetchOnWindowFocus: true
-    }
-  )
+// Query keys
+export const warrantyKeys = {
+  all: ['warranties'] as const,
+  lists: () => [...warrantyKeys.all, 'list'] as const,
+  list: (filters: Record<string, any>) => [...warrantyKeys.lists(), filters] as const,
+  details: () => [...warrantyKeys.all, 'detail'] as const,
+  detail: (id: string) => [...warrantyKeys.details(), id] as const,
 }
 
+// Get warranties list
+export function useWarranties(params?: {
+  page?: number
+  limit?: number
+  status?: string
+  search?: string
+}) {
+  return useQuery({
+    queryKey: warrantyKeys.list(params || {}),
+    queryFn: () => erpsApi.warranties.getAll(params),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+}
+
+// Get single warranty
 export function useWarranty(id: string) {
-  return useAuthQuery(
-    ['warranty', id],
-    () => api.getWarranty(id),
-    {
-      enabled: !!id,
-      staleTime: 5 * 60 * 1000
-    }
-  )
+  return useQuery({
+    queryKey: warrantyKeys.detail(id),
+    queryFn: () => erpsApi.warranties.getById(id),
+    enabled: !!id,
+  })
 }
 
+// Create warranty mutation
 export function useCreateWarranty() {
-  return useAuthMutation(
-    (warrantyData: any) => api.createWarranty(warrantyData),
-    {
-      invalidateQueries: [['warranties']],
-      onSuccess: () => {
-        console.log('Warranty created successfully')
-      },
-      onError: (error) => {
-        console.error('Failed to create warranty:', error)
-      }
-    }
-  )
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: (warrantyData: any) => erpsApi.warranties.create(warrantyData),
+    onSuccess: () => {
+      // Invalidate and refetch warranties list
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.lists() })
+    },
+  })
 }
 
+// Update warranty mutation
 export function useUpdateWarranty() {
-  return useAuthMutation(
-    ({ id, data }: { id: string; data: any }) => api.updateWarranty(id, data),
-    {
-      invalidateQueries: [['warranties'], ['warranty']],
-      onSuccess: () => {
-        console.log('Warranty updated successfully')
-      }
-    }
-  )
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) => 
+      erpsApi.warranties.update(id, data),
+    onSuccess: (_, { id }) => {
+      // Invalidate specific warranty and list
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.lists() })
+    },
+  })
 }
 
-export function useActivateWarranty() {
-  return useAuthMutation(
-    ({ id, data }: { id: string; data: any }) => api.activateWarranty(id, data),
-    {
-      invalidateQueries: [['warranties'], ['warranty']],
-      onSuccess: () => {
-        console.log('Warranty activated successfully')
-      }
-    }
-  )
+// Submit warranty for verification
+export function useSubmitWarranty() {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ id, installerId }: { id: string; installerId: string }) =>
+      erpsApi.warranties.submit(id, installerId),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.lists() })
+    },
+  })
+}
+
+// Upload warranty photos
+export function useUploadWarrantyPhotos() {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ 
+      id, 
+      files, 
+      categories, 
+      descriptions 
+    }: { 
+      id: string
+      files: File[]
+      categories: string[]
+      descriptions: string[]
+    }) => erpsApi.warranties.uploadPhotos(id, files, categories, descriptions),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: warrantyKeys.detail(id) })
+    },
+  })
 }

@@ -16,7 +16,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
-    <header className="bg-black text-white border-b border-border">
+    <header className="bg-[#131313] text-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
@@ -40,7 +40,10 @@ export function Header({ showNavigation = true }: HeaderProps) {
                   alt="WarrantyDB Logo" 
                   width={118} 
                   height={40}
-                  className="h-8 w-auto sm:h-10"
+                  loading="eager"
+                  priority
+                  className="h-8 sm:h-10"
+                  style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
       

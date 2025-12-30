@@ -1,71 +1,100 @@
 "use client"
 
-import { useAuthQuery, useAuthMutation, useRoleQuery } from './use-auth-query'
-import { api } from '@/lib/api/client'
-import { UserRole } from '@/lib/auth'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { erpsApi, Inspection } from '@/lib/api/client'
 
-// Inspections hooks with role-based access
-export function useInspections(
-  params?: { status?: string; inspector?: string; page?: number; limit?: number },
-  userRole?: UserRole
-) {
-  // Only inspectors and admins can view all inspections
-  return useRoleQuery(
-    ['inspections', JSON.stringify(params || {})],
-    () => api.getInspections(params),
-    ['inspector', 'admin'],
-    userRole,
-    {
-      staleTime: 2 * 60 * 1000
-    }
-  )
+// Query keys
+export const inspectionKeys = {
+  all: ['inspections'] as const,
+  lists: () => [...inspectionKeys.all, 'list'] as const,
+  list: (filters: Record<string, any>) => [...inspectionKeys.lists(), filters] as const,
+  details: () => [...inspectionKeys.all, 'detail'] as const,
+  detail: (id: string) => [...inspectionKeys.details(), id] as const,
 }
 
-export function useInspection(id: string, userRole?: UserRole) {
-  return useRoleQuery(
-    ['inspection', id],
-    () => api.getInspection(id),
-    ['inspector', 'admin'],
-    userRole,
-    {
-      staleTime: 5 * 60 * 1000
-    }
-  )
+// Get inspections list
+export function useInspections(params?: {
+  page?: number
+  limit?: number
+  status?: string
+  warrantyId?: string
+}) {
+  return useQuery({
+    queryKey: inspectionKeys.list(params || {}),
+    queryFn: () => erpsApi.inspections.getAll(params),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
 }
 
+// Get single inspection
+export function useInspection(id: string) {
+  return useQuery({
+    queryKey: inspectionKeys.detail(id),
+    queryFn: () => erpsApi.inspections.getById(id),
+    enabled: !!id,
+  })
+}
+
+// Create inspection mutation
 export function useCreateInspection() {
-  return useAuthMutation(
-    (inspectionData: any) => api.createInspection(inspectionData),
-    {
-      invalidateQueries: [['inspections']],
-      onSuccess: () => {
-        console.log('Inspection created successfully')
-      }
-    }
-  )
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: (inspectionData: any) => erpsApi.inspections.create(inspectionData),
+    onSuccess: () => {
+      // Invalidate and refetch inspections list
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.lists() })
+    },
+  })
 }
 
+// Update inspection mutation
 export function useUpdateInspection() {
-  return useAuthMutation(
-    ({ id, data }: { id: string; data: any }) => api.updateInspection(id, data),
-    {
-      invalidateQueries: [['inspections'], ['inspection']],
-      onSuccess: () => {
-        console.log('Inspection updated successfully')
-      }
-    }
-  )
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) => 
+      erpsApi.inspections.update(id, data),
+    onSuccess: (_, { id }) => {
+      // Invalidate specific inspection and list
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.lists() })
+    },
+  })
 }
 
-export function useUploadInspectionPhoto() {
-  return useAuthMutation(
-    ({ inspectionId, file }: { inspectionId: string; file: File }) => 
-      api.uploadInspectionPhoto(inspectionId, file),
-    {
-      invalidateQueries: [['inspection']],
-      onSuccess: () => {
-        console.log('Photo uploaded successfully')
-      }
-    }
-  )
+// Submit inspection for verification
+export function useSubmitInspection() {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ id, inspectorId }: { id: string; inspectorId: string }) =>
+      erpsApi.inspections.submit(id, inspectorId),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.lists() })
+    },
+  })
+}
+
+// Upload inspection photos
+export function useUploadInspectionPhotos() {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: ({ 
+      id, 
+      files, 
+      categories, 
+      descriptions 
+    }: { 
+      id: string
+      files: File[]
+      categories: string[]
+      descriptions: string[]
+    }) => erpsApi.inspections.uploadPhotos(id, files, categories, descriptions),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: inspectionKeys.detail(id) })
+    },
+  })
 }

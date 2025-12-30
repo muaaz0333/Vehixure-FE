@@ -1,49 +1,95 @@
 "use client"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useAuth } from "@/components/providers/auth-provider"
-import { authenticateUser, getRedirectPath } from "@/lib/auth"
-import { AuthRedirect } from "@/components/auth/auth-redirect"
+import { useRouter } from "next/navigation"
+import { getRedirectPath } from "@/lib/auth"
 import { Eye, EyeOff } from "lucide-react"
+import { ClientOnly } from "@/components/providers/client-only"
+import Cookies from 'js-cookie'
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
+  const { login, isLoading, isAuthenticated, user, isInitialized } = useAuth()
   const router = useRouter()
-  const { login } = useAuth()
+
+  // Redirect authenticated users
+  useEffect(() => {
+    if (isInitialized && isAuthenticated && user) {
+      const redirectPath = getRedirectPath(user)
+      router.replace(redirectPath)
+    }
+  }, [isInitialized, isAuthenticated, user, router])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
-    setIsLoading(true)
 
     try {
-      const user = authenticateUser(username, password)
-
-      if (user) {
-        login(user)
-        const redirectPath = getRedirectPath(user.role)
-        router.push(redirectPath)
+      const result = await login(email, password)
+      if (result.success) {
+        // Get user from localStorage and redirect immediately after successful login
+        const userStr = localStorage.getItem('user')
+        if (userStr) {
+          try {
+            const userData = JSON.parse(userStr)
+            Cookies.set("user", userStr, { expires: 7 })
+            const redirectPath = getRedirectPath(userData)
+            router.replace(redirectPath)
+          } catch {
+            router.replace('/dashboard')
+          }
+        } else {
+          router.replace('/dashboard')
+        }
       } else {
-        setError("Invalid username or password")
+        setError(result.message || "Invalid email or password")
       }
-    } catch {
-      setError("Login failed. Please try again.")
-    } finally {
-      setIsLoading(false)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login failed. Please try again.")
     }
   }
 
+  // Show loading while auth is initializing
+  if (!isInitialized) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // If user is already authenticated, show redirecting message
+  if (isAuthenticated && user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Redirecting...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <AuthRedirect>
+    <ClientOnly fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
       <div className="px-4 sm:px-6 py-8 sm:py-12 lg:py-16 bg-white min-h-[calc(100vh-200px)] flex items-center">
-        <div className="w-full max-w-md mx-auto">
+        <div className="w-full max-w-lg mx-auto">
           <h1 className="text-xl sm:text-2xl font-semibold text-center mb-6 sm:mb-10">
             Login
           </h1>
@@ -56,9 +102,10 @@ export default function LoginPage() {
             )}
 
             <Input
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full h-10 sm:h-12 bg-gray-100 border border-gray-200 rounded-lg text-sm sm:text-base"
               required
               disabled={isLoading}
@@ -90,26 +137,25 @@ export default function LoginPage() {
               </button>
             </div>
 
-
             <Button
               type="submit"
-              className="w-full h-10 sm:h-12 bg-[#FF2D20] hover:bg-[#FF2D20]/90 text-white rounded-lg text-sm font-medium disabled:opacity-50"
+              className="w-full h-10 sm:h-12 bg-[#ED1C24] hover:bg-[#FF2D20]/95 text-white rounded-lg text-sm font-medium disabled:opacity-50"
               disabled={isLoading}
             >
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
 
-          <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+          {/* <div className="mt-8 p-4 bg-gray-50 rounded-lg">
             <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Credentials:</h3>
             <div className="text-xs text-gray-600 space-y-1">
-              <div><strong>Admin:</strong> admin / admin123</div>
-              <div><strong>Agent:</strong> agent / agent123</div>
-              <div><strong>Inspector:</strong> inspector / inspector123</div>
+              <div><strong>Admin:</strong> admin@erps.com / admin123</div>
+              <div><strong>Partner Admin:</strong> partner@test.com / partner123</div>
+              <div><strong>Installer:</strong> installer@test.com / installer123</div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
-    </AuthRedirect>
+    </ClientOnly>
   )
 }

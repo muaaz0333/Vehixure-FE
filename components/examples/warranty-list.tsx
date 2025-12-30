@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import { useWarranties, useCreateWarranty } from '@/lib/hooks/use-warranties'
-import { useCurrentUser } from '@/lib/hooks/use-users'
-import { User } from '@/lib/auth'
+import { useAuth } from '@/components/providers/auth-provider'
 
 // Example component showing React Query usage with role-based access
 export function WarrantyList() {
@@ -11,7 +10,7 @@ export function WarrantyList() {
   const [status, setStatus] = useState<string>('')
   
   // Get current user for role checking
-  const { data: currentUser, isLoading: userLoading } = useCurrentUser()
+  const { user, isAuthenticated } = useAuth()
   
   // Fetch warranties with pagination and filtering
   const { 
@@ -40,17 +39,13 @@ export function WarrantyList() {
     }
   }
   
-  if (userLoading) {
-    return <div>Loading user...</div>
-  }
-  
-  if (!currentUser) {
+  if (!isAuthenticated || !user) {
     return <div>Please log in to view warranties</div>
   }
   
   // Role-based UI rendering
-  const canCreateWarranty = ['admin', 'agent'].includes((currentUser as User)?.role || '')
-  const canViewAllWarranties = ['admin'].includes((currentUser as User)?.role || '')
+  const canCreateWarranty = ['ERPS_ADMIN', 'PARTNER_USER'].includes(user.role)
+  const canViewAllWarranties = user.role === 'ERPS_ADMIN'
   
   return (
     <div className="p-6">

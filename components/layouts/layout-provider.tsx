@@ -23,7 +23,8 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
                           pathname.startsWith('/inspections') || 
                           pathname.startsWith('/warranties') ||
                           pathname.startsWith('/stats') ||
-                          pathname.startsWith('/account')
+                          pathname.startsWith('/account') ||
+                          pathname.startsWith('/admin')
 
   // Agent routes that need agent sidebar
   const isAgentRoute = pathname.startsWith('/agent-dashboard') || 
