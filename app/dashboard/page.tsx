@@ -302,16 +302,17 @@ export default function Dashboard() {
                                     <table className="w-full min-w-[800px]">
                                         <thead className="bg-gray-50 sticky top-0 z-10">
                                             <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">VIN</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Vehicle</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Owner</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Installer</th>
-                                                <th className="px-8 lg:px-8 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Installation Date</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Status</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Corrosion</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Action</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">VIN</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Vehicle</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Owner</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Installer</th>
+                                                <th className="px-6 py-3 font-medium whitespace-nowrap">Installation Date</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Status</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Corrosion</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Action</th>
                                             </tr>
                                         </thead>
+
                                         <tbody className="divide-y divide-gray-200">
                                             {filteredWarranties.map((warranty) => (
                                                 <tr key={warranty.id} className="hover:bg-gray-50">
@@ -475,7 +476,7 @@ export default function Dashboard() {
 
                                 <div className="overflow-x-auto">
                                     <table className="w-full min-w-[1000px]">
-                                        <thead className="bg-gray-50">
+                                        {/* <thead className="bg-gray-50">
                                             <tr className="text-left text-xs sm:text-sm text-gray-600">
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">VIN</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle</th>
@@ -487,7 +488,22 @@ export default function Dashboard() {
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
                                             </tr>
+                                        </thead> */}
+                                        <thead className="bg-gray-50 sticky top-0 z-10">
+                                            <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">VIN</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Vehicle</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Owner</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Installer</th>
+                                                <th className="px-6 py-3 font-medium whitespace-nowrap">Installation Date</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Corrosion Details</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Notes</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Status</th>
+                                                <th className="px-3 sm:px-6 py-3 font-medium whitespace-nowrap">Action</th>
+
+                                            </tr>
                                         </thead>
+
                                         <tbody className="divide-y divide-gray-200">
                                             {filteredCorrosionWarranties.map((warranty) => (
                                                 <tr key={warranty.id} className="hover:bg-gray-50">
