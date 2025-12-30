@@ -37,7 +37,7 @@ export function PageHeader({
   onLogout
 }: PageHeaderProps) {
 
-   const [profileOpen, setProfileOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -50,13 +50,13 @@ export function PageHeader({
     return () => document.removeEventListener('click', handler)
   }, [])
 
-    const { logout } = useAuth()
-      const router = useRouter()
-  
-      const handleLogout = () => {
-          logout()
-          router.push("/login")
-      }
+  const { logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    router.push("/login")
+  }
 
   return (
     <div className="bg-white  px-4 sm:px-6 py-3">
@@ -76,6 +76,9 @@ export function PageHeader({
                 placeholder="Search..."
                 value={searchValue}
                 onChange={(e) => onSearchChange?.(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') e.preventDefault()
+                }}
                 className="pl-10 pr-4 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 w-64"
               />
             </div>
@@ -103,6 +106,7 @@ export function PageHeader({
           {/* User */}
           <div className="relative page-header-profile">
             <button
+              type="button"
               onClick={() => setProfileOpen(v => !v)}
               className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition focus:outline-none"
             >
@@ -205,6 +209,9 @@ export function PageHeader({
               placeholder="Search..."
               value={searchValue}
               onChange={(e) => onSearchChange?.(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.preventDefault()
+              }}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>

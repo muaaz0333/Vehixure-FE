@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 
 import { AlphabetTabs } from '@/components/ui/alphabet-tabs'
@@ -64,11 +64,19 @@ export default function AgentsPage() {
     router.push('/login')
   }
 
+  const [debouncedSearch, setDebouncedSearch] = useState(searchTerm)
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchTerm), 4000)
+    return () => clearTimeout(t)
+  }, [searchTerm])
+
+
   // Fetch partner users (agents)
   const { data, isLoading, error } = usePartnerUsers({
     page,
     limit: 50,
-    search: searchTerm,
+    search: debouncedSearch,
     role: 'ACCOUNT_ADMIN' // Filter for admin users who are typically agents
   })
 
@@ -205,7 +213,7 @@ export default function AgentsPage() {
         <div className="px-4 sm:px-6">
           <div className="flex gap-4 overflow-x-auto border-b">
             <Link href="/agents">
-              <button className="px-4 py-3 text-sm font-medium border-b-2 border-red-500 text-red-600">
+              <button type='button' className="px-4 py-3 text-sm font-medium border-b-2 border-red-500 text-red-600">
                 Agents
               </button>
             </Link>
@@ -228,6 +236,7 @@ export default function AgentsPage() {
 
             <Button
               onClick={handleAddAgent}
+              type='button'
               className="hidden sm:inline-flex bg-red-600 hover:bg-red-700 text-white"
               disabled={createPartnerUser.isPending}
             >

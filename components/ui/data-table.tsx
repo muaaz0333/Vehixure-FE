@@ -28,12 +28,12 @@ interface DataTableProps {
   itemsPerPage?: number
 }
 
-export function DataTable({ 
-  columns, 
-  data, 
-  title, 
-  showSearch = true, 
-  showAdd = true, 
+export function DataTable({
+  columns,
+  data,
+  title,
+  showSearch = true,
+  showAdd = true,
   showEdit = true,
   onAdd,
   onEdit,
@@ -53,10 +53,10 @@ export function DataTable({
 
   const sortedData = [...data].sort((a, b) => {
     if (!sortConfig) return 0
-    
+
     const aValue = a[sortConfig.key]
     const bValue = b[sortConfig.key]
-    
+
     if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1
     if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1
     return 0
@@ -115,11 +115,11 @@ export function DataTable({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-6 py-3 bg-gray-50 sticky top-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-6 py-3 bg-gray-50 sticky top-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap"
                   style={{ width: column.width }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 whitespace-nowrap">
                     {column.label}
                     {column.sortable && (
                       <span className="text-gray-400">
@@ -153,7 +153,7 @@ export function DataTable({
                 ))}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {onRowEdit ? (
-                    <button 
+                    <button
                       onClick={() => onRowEdit(row)}
                       className="text-gray-400 hover:text-gray-600 p-1 rounded hover:bg-gray-100"
                     >
@@ -177,14 +177,14 @@ export function DataTable({
           {startIndex + 1}-{Math.min(startIndex + itemsPerPage, data.length)} of {data.length} items
         </div>
         <div className="flex items-center gap-2">
-          <button 
+          <button
             onClick={() => setCurrentPage(1)}
             disabled={currentPage === 1}
             className="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50"
           >
             ‹‹
           </button>
-          <button 
+          <button
             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50"
@@ -197,24 +197,23 @@ export function DataTable({
               <button
                 key={pageNum}
                 onClick={() => setCurrentPage(pageNum)}
-                className={`px-3 py-1 text-sm rounded ${
-                  currentPage === pageNum
-                    ? 'bg-red-600 text-white'
-                    : 'border border-gray-200 hover:bg-gray-50'
-                }`}
+                className={`px-3 py-1 text-sm rounded ${currentPage === pageNum
+                  ? 'bg-red-600 text-white'
+                  : 'border border-gray-200 hover:bg-gray-50'
+                  }`}
               >
                 {pageNum}
               </button>
             )
           })}
-          <button 
+          <button
             onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
             className="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50"
           >
             ›
           </button>
-          <button 
+          <button
             onClick={() => setCurrentPage(totalPages)}
             disabled={currentPage === totalPages}
             className="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50"
@@ -223,7 +222,7 @@ export function DataTable({
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <select 
+          <select
             value={itemsPerPage}
             className="px-3 py-1 text-sm border border-gray-200 rounded"
           >
