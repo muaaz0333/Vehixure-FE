@@ -1,8 +1,9 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ImageUpload } from "@/components/ui/image-upload"
 import { X, ChevronDown, Calendar } from "lucide-react"
 import { useState } from "react"
 
@@ -55,6 +56,8 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
     confirmInstallation: false
   })
 
+  const [images, setImages] = useState<File[]>([])
+
   const [dropdowns, setDropdowns] = useState({
     make: false,
     model: false,
@@ -77,6 +80,7 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
 
   const handleSubmit = () => {
     console.log("Creating warranty with data:", formData)
+    console.log("Uploaded images:", images)
     onClose()
   }
 
@@ -484,6 +488,18 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                 </label>
               </div>
             </div>
+          </div>
+
+          {/* Image Upload Section */}
+          <div>
+            <h3 className="text-md font-semibold text-red-600 mb-3">Installation Photos</h3>
+            <ImageUpload
+              maxImages={3}
+              images={images}
+              onImagesChange={setImages}
+              label="Upload Installation Images"
+              description="Upload up to 3 photos of the installation"
+            />
           </div>
 
 

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/components/providers/auth-provider"
 import { useRouter } from 'next/navigation'
 import { Search } from "lucide-react"
+import { RecordInspectionModal } from "@/components/shared/record-inspection-modal"
 
 const upcomingInspectionData = [
     {
@@ -112,6 +113,8 @@ const upcomingInspectionData = [
 
 export default function AgentInspections() {
     const [showRecordInspection, setShowRecordInspection] = useState(false)
+    const [showRecordModal, setShowRecordModal] = useState(false)
+    const [selectedInspection, setSelectedInspection] = useState<typeof upcomingInspectionData[0] | null>(null)
     const [activeTab, setActiveTab] = useState("upcoming")
     const [searchValue, setSearchValue] = useState("")
     const searchInputRef = useRef<HTMLInputElement | null>(null)
@@ -126,6 +129,11 @@ export default function AgentInspections() {
 
     const handleRecordInspection = () => {
         setShowRecordInspection(true)
+    }
+
+    const handleOpenRecordModal = (inspection: typeof upcomingInspectionData[0]) => {
+        setSelectedInspection(inspection)
+        setShowRecordModal(true)
     }
 
     const handleSearch = () => {
@@ -402,8 +410,9 @@ export default function AgentInspections() {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                aria-label="More actions"
+                                                aria-label="Record inspection"
                                                 className="h-8 w-8 sm:h-10 sm:w-10"
+                                                onClick={() => handleOpenRecordModal(inspection)}
                                             >
                                                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                                                     <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
@@ -458,6 +467,25 @@ export default function AgentInspections() {
                     </div>
                 </div>
             </div>
+
+            {/* Record Inspection Modal */}
+            <RecordInspectionModal
+                isOpen={showRecordModal}
+                onClose={() => {
+                    setShowRecordModal(false)
+                    setSelectedInspection(null)
+                }}
+                inspection={selectedInspection ? {
+                    no: selectedInspection.no,
+                    dueDate: selectedInspection.dueDate,
+                    stockId: selectedInspection.stockId,
+                    vinNo: selectedInspection.vinNo,
+                    year: String(selectedInspection.year),
+                    make: selectedInspection.make,
+                    model: selectedInspection.model,
+                    registration: selectedInspection.registration
+                } : null}
+            />
         </div>
     )
 }

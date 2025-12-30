@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { useAuth } from '@/components/providers/auth-provider'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { RecordInspectionModal } from '@/components/shared/record-inspection-modal'
 
 
 // Mock data for inspections
@@ -170,6 +171,8 @@ export default function InspectionsPage() {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed'>('upcoming')
   const [searchValue, setSearchValue] = useState('')
   const [showRecordInspection, setShowRecordInspection] = useState(false)
+  const [showRecordModal, setShowRecordModal] = useState(false)
+  const [selectedInspection, setSelectedInspection] = useState<typeof upcomingInspections[0] | null>(null)
 
   const currentData = activeTab === 'upcoming' ? upcomingInspections : completedInspections
   const filteredData = currentData.filter((inspection) =>
@@ -198,6 +201,11 @@ export default function InspectionsPage() {
     document.addEventListener('click', handler)
     return () => document.removeEventListener('click', handler)
   }, [])
+
+  const handleRecordInspection = (inspection: typeof upcomingInspections[0]) => {
+    setSelectedInspection(inspection)
+    setShowRecordModal(true)
+  }
 
 
   return (
@@ -444,7 +452,13 @@ export default function InspectionsPage() {
                     <td className="py-3 px-4 text-sm text-gray-900">{inspection.model}</td>
                     <td className="py-3 px-4 text-sm text-gray-900">{inspection.registration}</td>
                     <td className="py-3 px-4">
-                      <Button variant="ghost" size="sm" className="p-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="p-1"
+                        onClick={() => handleRecordInspection(inspection)}
+                        title="Record Inspection"
+                      >
                         <MoreHorizontal className="w-4 h-4 text-gray-400" />
                       </Button>
                     </td>
@@ -514,6 +528,16 @@ export default function InspectionsPage() {
         </div>
         {/* </div> */}
       </div>
+
+      {/* Record Inspection Modal */}
+      <RecordInspectionModal
+        isOpen={showRecordModal}
+        onClose={() => {
+          setShowRecordModal(false)
+          setSelectedInspection(null)
+        }}
+        inspection={selectedInspection}
+      />
     </div>
   )
 }

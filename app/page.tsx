@@ -133,7 +133,7 @@ export default function LandingPage() {
       {/* <section className="relative bg-black text-white pt-24 pb-48 px-4 sm:px-6 overflow-visible"> */}
       {/* <section className="relative bg-black text-white pt-24 pb-[428px] px-4 sm:px-6 overflow-visible rounded-b-4xl"> */}
       <section
-  className="
+        className="
     relative bg-black text-white
     pt-14
     sm:pt-20
@@ -145,7 +145,7 @@ export default function LandingPage() {
     overflow-visible
     rounded-b-4xl
   "
->
+      >
 
         <div className="container mx-auto max-w-4xl text-center">
           <h1 className="text-3xl sm:text-3xl lg:text-5xl font-bold leading-tight lg:leading-[1.19] mb-4 sm:mb-6 text-balance">
@@ -301,7 +301,7 @@ export default function LandingPage() {
 
           {/* Mobile: scroll, Desktop: grid */}
           <div className="lg:hidden">
-            <div className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4">
+            <div className="flex flex-col gap-6 items-center">
               {FEATURES.map((item, idx) => {
                 const active = idx === activeIndex;
                 return (
