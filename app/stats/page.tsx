@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import { Search, ChevronDown, MoreHorizontal } from 'lucide-react'
+import { useAuth } from '@/components/providers/auth-provider'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 type TabType = 'warranty' | 'sci-fleet' | 'market'
 
@@ -121,6 +124,29 @@ export default function StatsPage() {
   const filteredMarketData = marketMockData.filter((row) => matches(row))
 
 
+  const { user, logout } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
+  const [profileOpen, setProfileOpen] = useState(false)
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest('.inspection-profile')) {
+        setProfileOpen(false)
+      }
+    }
+
+    document.addEventListener('click', handler)
+    return () => document.removeEventListener('click', handler)
+  }, [])
+
+
+
   return (
     <div className="h-screen bg-white flex flex-col">
 
@@ -141,12 +167,78 @@ export default function StatsPage() {
                 />
               </div>
             </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gray-300 overflow-hidden">
-                <img src="/api/placeholder/32/32" alt="User" className="w-full h-full object-cover" />
-              </div>
-              <span className="text-sm font-medium text-gray-700">Anthony</span>
-              <ChevronDown className="w-4 h-4 text-gray-600" />
+            <div className="relative inspection-profile">
+              <button
+                onClick={() => setProfileOpen(v => !v)}
+                className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition focus:outline-none"
+              >
+                {/* Avatar */}
+                <div className="w-8 h-8 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-semibold text-gray-700">
+                    {user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                  </span>
+                </div>
+
+                {/* Name */}
+                <span className="text-sm font-medium hidden sm:block max-w-[120px] truncate">
+                  {user?.fullName || user?.email || 'User'}
+                </span>
+
+                <ChevronDown
+                  className={`w-4 h-4 text-gray-400 transition-transform ${profileOpen ? 'rotate-180' : ''
+                    }`}
+                />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-3 w-64 rounded-xl bg-white border border-gray-200 shadow-lg z-50">
+                  {/* User info */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {user?.fullName || 'User'}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  {/* Logout */}
+                  <div className="p-2">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => {
+                        setProfileOpen(false)
+                        handleLogout()
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          setProfileOpen(false)
+                          handleLogout()
+                        }
+                      }}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg
+                     text-sm font-medium text-red-600 hover:bg-red-50
+                     cursor-pointer transition"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"
+                        />
+                      </svg>
+                      <span>Logout</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
