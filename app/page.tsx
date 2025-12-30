@@ -537,13 +537,13 @@ export default function LandingPage() {
               return (
                 <div
                   key={idx}
-                  className="border-t border-b border-border bg-white transition-shadow"
+                  className="border-b border-border bg-white transition-shadow"
                 >
                   {/* Header */}
                   <button
                     type="button"
                     onClick={() => setOpenIndex(open ? null : idx)}
-                    className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                    className="w-full flex items-center justify-between gap-4 px-6 py-1 text-left"
                   >
                     <span className="sm:text-lg lg:text-xl font-medium">
                       {item.q}
