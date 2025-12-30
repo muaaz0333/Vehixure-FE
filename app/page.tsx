@@ -162,7 +162,7 @@ export default function LandingPage() {
           <Link href="/login">
             <Button
               size="lg"
-              className="bg-[#FF2D20] hover:bg-[#FF2D20]/90 rounded-4xl text-white px-5 sm:px-8 py-4 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+              className="bg-[#ED1C24] hover:bg-[#FF2D20]/95 rounded-4xl text-white px-5 sm:px-8 py-4 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 w-full sm:w-auto"
             >
               Get Started Now
             </Button>

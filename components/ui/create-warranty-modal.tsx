@@ -82,31 +82,38 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      {/* <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide [&>button]:hidden"> */}
       <DialogContent
         className="
-    w-[95vw] sm:w-full
-    max-w-full sm:max-w-xl lg:max-w-2xl
-    max-h-[90vh]
-    overflow-y-auto
-    scrollbar-hide
-    px-4 sm:px-6
-    [&>button]:hidden
-  "
+      w-[95vw] sm:w-full
+      max-w-full sm:max-w-xl lg:max-w-3xl
+      max-h-[90vh]
+      p-0
+      rounded-2xl
+      flex flex-col
+      overflow-hidden
+      [&>button]:hidden
+    "
       >
 
-        <DialogHeader className="pb-4">
-          {/* <div className="flex items-center justify-between"> */}
-          <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-
-            <DialogTitle className="text-xl font-bold">Add Warranty</DialogTitle>
+        <div className="shrink-0 bg-white px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-xl font-bold">Add Warranty</h2>
             <Button variant="ghost" size="sm" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
           </div>
-        </DialogHeader>
+        </div>
 
-        <div className="space-y-6">
+
+        <div className="
+        flex-1
+        overflow-y-auto
+        overscroll-contain
+        px-4 sm:px-6
+        py-2
+        space-y-6
+      "
+          style={{ scrollbarGutter: 'stable' }}>
           {/* REF / Stock ID */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -116,7 +123,7 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
               value={formData.refStockId}
               onChange={(e) => handleInputChange('refStockId', e.target.value)}
               className="bg-gray-50"
-              // readOnly
+            // readOnly
             />
           </div>
 
@@ -460,7 +467,9 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                     <span className="ml-2 text-sm text-gray-700">No</span>
                   </label>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Explain</p>
+                <div>
+                  <input type="text" className="text-xs text-gray-500 mt-1 border border-gray-300 rounded-md px-2 py-5 w-full" placeholder="Explain"/>
+                </div>
               </div>
               <div className="flex items-start gap-3">
                 <input
@@ -468,25 +477,29 @@ export function CreateWarrantyModal({ isOpen, onClose, selectedAgent }: CreateWa
                   id="confirmInstallation"
                   checked={formData.confirmInstallation}
                   onChange={(e) => handleInputChange('confirmInstallation', e.target.checked)}
-                  className="mt-1 w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500"
+                  className="mt-0.5 w-4 h-4 text-red-600 border-red focus:ring-red-500"
                 />
-                <label htmlFor="confirmInstallation" className="text-sm text-gray-700">
+                <label htmlFor="confirmInstallation" className="text-sm text-[#E31D1C] font-semibold">
                   I confirm I have installed the system as per the installation instructions. ( Check box to accept)
                 </label>
               </div>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          {/* <div className="flex justify-between pt-6 border-t"> */}
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 pt-6 border-t">
 
-            <Button variant="outline" className="px-8">
+        </div>
+
+        {/* Action Buttons */}
+        {/* <div className="flex justify-between pt-6 border-t"> */}
+        <div className="shrink-0 border-t bg-white px-4 sm:px-6 py-4">
+          <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-between">
+            <Button variant="outline" className="px-25">
               Save Information for Later
             </Button>
+
             <Button
               onClick={handleSubmit}
-              className="bg-red-600 hover:bg-red-700 text-white px-8"
+              className="bg-red-600 hover:bg-red-700 text-white px-25"
             >
               Create Warranty
             </Button>

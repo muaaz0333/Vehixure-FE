@@ -140,7 +140,7 @@ export default function TermsAndConditionsPage() {
       <div className="bg-white border-b border-gray-200 shrink-0">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-4 sm:px-6 py-3 sm:py-4 gap-3 lg:gap-0">
           <h1 className="text-xl font-semibold text-gray-900">Terms and Conditions</h1>
-          
+
           {/* Desktop actions */}
           <div className="hidden lg:flex items-center gap-4">
             <div className="relative">
@@ -184,11 +184,10 @@ export default function TermsAndConditionsPage() {
                 <Link
                   key={tab.id}
                   href={tab.href}
-                  className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 ${
-                    tab.active
-                      ? "text-red-600 border-red-600"
-                      : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                  className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 ${tab.active
+                    ? "text-red-600 border-red-600"
+                    : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
+                    }`}
                 >
                   {tab.label}
                 </Link>
@@ -203,7 +202,7 @@ export default function TermsAndConditionsPage() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Terms and Conditions</h2>
               <div className="flex items-center gap-4">
-                <select 
+                <select
                   className="border border-gray-300 rounded px-3 py-2 text-sm"
                   value={statusFilter}
                   onChange={handleStatusChange}
@@ -231,12 +230,12 @@ export default function TermsAndConditionsPage() {
           ) : (
             <div className="flex-1 overflow-auto min-h-0">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="sticky top-0 z-20 bg-gray-50 border-b border-gray-200">
                   <tr>
                     {columns.map((column) => (
                       <th
                         key={column.key}
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0 bg-gray-50"
                       >
                         <div className="flex items-center gap-1">
                           {column.label}
@@ -281,11 +280,10 @@ export default function TermsAndConditionsPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            term.status === "ACTIVE" || term.status === "Active"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${term.status === "ACTIVE" || term.status === "Active"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                            }`}>
                             {term.status === "ACTIVE" ? "Active" : term.status === "INACTIVE" ? "In-Active" : term.status}
                           </span>
                         </td>
@@ -304,23 +302,23 @@ export default function TermsAndConditionsPage() {
 
           {/* Pagination */}
           <div className="px-4 sm:px-6 py-3 border-t border-gray-200 shrink-0">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-3 items-center gap-3">
               <div className="text-xs sm:text-sm text-gray-500">
-                {pagination.total > 0 
+                {pagination.total > 0
                   ? `${(pagination.page - 1) * pagination.limit + 1}–${Math.min(pagination.page * pagination.limit, pagination.total)} of ${pagination.total} items`
                   : `${terms.length} items`
                 }
               </div>
 
               <div className="flex items-center gap-1 overflow-x-auto">
-                <button 
+                <button
                   onClick={() => handlePageChange(1)}
                   disabled={pagination.page === 1}
                   className="px-2 py-1 border rounded text-xs sm:text-sm disabled:opacity-50"
                 >
                   &laquo;
                 </button>
-                <button 
+                <button
                   onClick={() => handlePageChange(Math.max(1, pagination.page - 1))}
                   disabled={pagination.page === 1}
                   className="px-2 py-1 border rounded text-xs sm:text-sm disabled:opacity-50"
@@ -332,24 +330,23 @@ export default function TermsAndConditionsPage() {
                   <button
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    className={`px-2 py-1 rounded text-xs sm:text-sm ${
-                      pagination.page === pageNum
-                        ? "bg-red-600 text-white"
-                        : "border hover:bg-gray-50"
-                    }`}
+                    className={`px-2 py-1 rounded text-xs sm:text-sm ${pagination.page === pageNum
+                      ? "bg-red-600 text-white"
+                      : "border hover:bg-gray-50"
+                      }`}
                   >
                     {pageNum}
                   </button>
                 ))}
 
-                <button 
+                <button
                   onClick={() => handlePageChange(Math.min(pagination.totalPages || 1, pagination.page + 1))}
                   disabled={pagination.page >= (pagination.totalPages || 1)}
                   className="px-2 py-1 border rounded text-xs sm:text-sm disabled:opacity-50"
                 >
                   &rsaquo;
                 </button>
-                <button 
+                <button
                   onClick={() => handlePageChange(pagination.totalPages || 1)}
                   disabled={pagination.page >= (pagination.totalPages || 1)}
                   className="px-2 py-1 border rounded text-xs sm:text-sm disabled:opacity-50"
@@ -357,7 +354,7 @@ export default function TermsAndConditionsPage() {
                   &raquo;
                 </button>
 
-                <select 
+                {/* <select
                   className="hidden sm:block ml-3 border rounded px-2 py-1 text-sm"
                   value={pagination.limit}
                   onChange={(e) => setPagination(prev => ({ ...prev, limit: Number(e.target.value), page: 1 }))}
@@ -366,7 +363,7 @@ export default function TermsAndConditionsPage() {
                   <option value={25}>25</option>
                   <option value={50}>50</option>
                   <option value={100}>100</option>
-                </select>
+                </select> */}
               </div>
             </div>
           </div>

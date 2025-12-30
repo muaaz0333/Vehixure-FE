@@ -82,7 +82,7 @@ export function AgentModal({ isOpen, onClose, onSave, mode, initialData }: Agent
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-w-md w-full max-h-[90vh] overflow-y-auto p-0 rounded-2xl scrollbar-hide"
+        className="w-full max-w-2xl lg:max-w-3xl max-h-[90vh] p-0 rounded-2xl flex flex-col overflow-hidden"
         showCloseButton={false}
       >
         {/* Header */}
@@ -99,7 +99,7 @@ export function AgentModal({ isOpen, onClose, onSave, mode, initialData }: Agent
         </div>
 
         {/* Form */}
-        <div className="px-6 pb-6 space-y-4">
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 pb-0">
           {/* Business Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -386,21 +386,26 @@ export function AgentModal({ isOpen, onClose, onSave, mode, initialData }: Agent
           </div>
 
           {/* Action Buttons */}
-          <div className="flex space-x-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={onClose}
-              className="flex-1 h-10 border-gray-300 text-gray-700 hover:bg-gray-50"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              className="flex-1 h-10 bg-red-600 hover:bg-red-700 text-white"
-            >
-              {mode === 'add' ? 'Add Account' : 'Save Changes'}
-            </Button>
+          <div className="shrink-0 sticky bottom-0 z-20 bg-white border-t px-6 py-4">
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                className="flex-1 h-10 border-gray-300 text-gray-700"
+              >
+                Cancel
+              </Button>
+
+              <Button
+                onClick={handleSubmit}
+                className="flex-1 h-10 bg-red-600 hover:bg-red-700 text-white"
+              >
+                {mode === 'add' ? 'Add Account' : 'Save Changes'}
+              </Button>
+            </div>
           </div>
+
+
         </div>
       </DialogContent>
     </Dialog>

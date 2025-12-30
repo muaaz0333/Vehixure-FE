@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { LayoutProvider } from "@/components/layouts/layout-provider";
@@ -7,7 +8,16 @@ import { AuthProvider } from "@/components/providers/auth-provider";
 import { AppProvider } from "@/components/providers/app-provider";
 import { ClientOnly } from "@/components/providers/client-only";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "ERRS - Electronic Real Estate Reporting System",
@@ -21,9 +31,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body 
-        className={inter.className}
-        suppressHydrationWarning={true}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ClientOnly fallback={
           <div className="flex items-center justify-center min-h-screen">

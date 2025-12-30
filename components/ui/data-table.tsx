@@ -66,7 +66,7 @@ export function DataTable({
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage)
   return (
-    <div className="bg-white">
+    <div className="bg-white h-full flex flex-col">
       {/* Header - only show if title is provided */}
       {title && (
         <div className="flex items-center justify-between p-6 border-b">
@@ -108,16 +108,14 @@ export function DataTable({
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="relative flex-1 overflow-auto">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-gray-50 sticky top-0 z-20 border-b">
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                    column.sortable ? 'cursor-pointer hover:bg-gray-100' : ''
-                  }`}
+                  className="px-6 py-3 bg-gray-50 sticky top-0 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   style={{ width: column.width }}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >

@@ -265,23 +265,28 @@ export default function InspectionsPage() {
         <div className="bg-red-50 border-b border-red-200">
           <div className="px-6 py-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Record Inspection</h2>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">Search for :</span>
-              <div className="relative flex-1 max-w-md">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full">
+              <span className="text-sm text-gray-600 whitespace-nowrap">
+                Search for :
+              </span>
+
+              <div className="relative w-full">
                 <Input
                   placeholder="EX: 135632"
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
-                  className="pr-12"
+                  className="w-full pr-12"
                 />
+
                 <Button
                   size="sm"
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 h-8"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 h-8"
                 >
                   <Search className="w-4 h-4" />
                 </Button>
               </div>
             </div>
+
           </div>
         </div>
       )}
@@ -328,11 +333,11 @@ export default function InspectionsPage() {
           <div className="overflow-x-auto max-h-[56vh] overflow-auto">
             {/* <table className="w-full"> */}
             <table className="min-w-[900px] w-full">
-              <thead>
+              <thead className="sticky top-0 z-20 bg-white">
                 <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">No</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Due Date</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">No</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">Due Date</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">
                     <div className="flex items-center gap-1">
                       Stock ID / Ref No
                       <div className="w-3 h-3 bg-gray-300 rounded-sm flex items-center justify-center">
@@ -340,9 +345,9 @@ export default function InspectionsPage() {
                       </div>
                     </div>
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">VIN No.</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Year</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">VIN No.</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">Year</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">
                     <div className="flex items-center gap-1">
                       Make
                       <div className="w-3 h-3 bg-gray-300 rounded-sm flex items-center justify-center">
@@ -350,7 +355,7 @@ export default function InspectionsPage() {
                       </div>
                     </div>
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">
                     <div className="flex items-center gap-1">
                       Model
                       <div className="w-3 h-3 bg-gray-300 rounded-sm flex items-center justify-center">
@@ -358,8 +363,8 @@ export default function InspectionsPage() {
                       </div>
                     </div>
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Registration</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">Action</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">Registration</th>
+                  <th className="sticky top-0 bg-white text-left py-3 px-4 text-sm font-medium text-gray-600">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -403,7 +408,7 @@ export default function InspectionsPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </Button>
-              <Button variant="outline" size="sm" className="bg-gray-900 text-white border-gray-900">
+              <Button variant="outline" size="sm" className="bg-[#ED1C24] text-white border-red-900">
                 1
               </Button>
               <Button variant="outline" size="sm">

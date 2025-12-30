@@ -291,187 +291,190 @@ export default function AgentWarranties() {
                         </div>
                     </div>
 
-                    <div className="overflow-x-auto">
-                        {activeTab === "warranties" ? (
-                            // Warranties Table
-                            <table className="w-full min-w-[900px]">
-                                <thead className="bg-gray-50">
-                                    <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            No
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            Date
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Stock ID / Ref No.</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            VIN No.
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Year</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            Make
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            Model
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Registration</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {filteredWarranties.map((warranty) => (
-                                        <tr key={warranty.no} className="hover:bg-gray-50">
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.no}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.date}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.stockId}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.vinNo}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.year}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.make}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.model}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.registration}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4">
-                                                <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
-                                                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                                    </svg>
-                                                </Button>
-                                            </td>
+                    <div className="relative flex flex-col h-[calc(100vh-240px)]">
+
+                        <div className="overflow-x-auto">
+                            {activeTab === "warranties" ? (
+                                // Warranties Table
+                                <table className="w-full min-w-[1000px]">
+                                    <thead className="bg-gray-50 sticky top-0 z-10">
+                                        <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                            <th className="w-12 px-3 sm:px-6 py-3 font-medium">
+                                                No
+                                            </th>
+                                            <th className="w-28 px-3 sm:px-6 py-3 font-medium">
+                                                Date
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="w-40 px-3 sm:px-6 py-3 font-medium">Stock ID / Ref No.</th>
+                                            <th className="w-48 px-3 sm:px-6 py-3 font-medium">
+                                                VIN No.
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="w-20 px-3 sm:px-6 py-3 font-medium">Year</th>
+                                            <th className="w-32 px-3 sm:px-6 py-3 font-medium">
+                                                Make
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="w-32 px-3 sm:px-6 py-3 font-medium">
+                                                Model
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="w-36 px-3 sm:px-6 py-3 font-medium">Registration</th>
+                                            <th className="w-20 px-3 sm:px-6 py-3 font-medium text-center">Action</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            // Saved Forms Table
-                            <table className="w-full min-w-[1000px]">
-                                <thead className="bg-gray-50">
-                                    <tr className="text-left text-xs sm:text-sm text-gray-600">
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">No</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            Form Name
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Customer Name</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle Details</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
-                                            Saved Date
-                                            <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                                            </svg>
-                                        </th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Last Modified</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Progress</th>
-                                        <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    {filteredSavedForms.map((form) => (
-                                        <tr key={form.no} className="hover:bg-gray-50">
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.no}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{form.formName}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.customerName}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.vehicleDetails}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.savedDate}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.lastModified}</td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                <span className={`px-2 py-1 rounded text-xs font-medium ${form.status === "Draft"
-                                                    ? "bg-yellow-100 text-yellow-800"
-                                                    : form.status === "Incomplete"
-                                                        ? "bg-red-100 text-red-800"
-                                                        : "bg-blue-100 text-blue-800"
-                                                    }`}>
-                                                    {form.status}
-                                                </span>
-                                            </td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-16 bg-gray-200 rounded-full h-2">
-                                                        <div
-                                                            className={`h-2 rounded-full ${form.completionPercentage >= 80 ? 'bg-green-500' :
-                                                                form.completionPercentage >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                                                                }`}
-                                                            style={{ width: `${form.completionPercentage}%` }}
-                                                        ></div>
-                                                    </div>
-                                                    <span className="text-xs text-gray-600">{form.completionPercentage}%</span>
-                                                </div>
-                                            </td>
-                                            <td className="px-3 sm:px-6 py-3 sm:py-4">
-                                                <div className="flex items-center gap-2">
-                                                    <Button variant="outline" size="sm" className="text-xs px-2 py-1">
-                                                        Edit
-                                                    </Button>
-                                                    <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8">
-                                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {filteredWarranties.map((warranty) => (
+                                            <tr key={warranty.no} className="hover:bg-gray-50">
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.no}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.date}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.stockId}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.vinNo}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.year}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.make}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.model}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{warranty.registration}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4">
+                                                    <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8 sm:h-10 sm:w-10">
+                                                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                                                             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                                                         </svg>
                                                     </Button>
-                                                </div>
-                                            </td>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                // Saved Forms Table
+                                <table className="w-full min-w-[1000px]">
+                                    <thead className="bg-gray-50 sticky top-0 z-10">
+                                        <tr className="text-left text-xs sm:text-sm text-gray-600">
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">No</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
+                                                Form Name
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Customer Name</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Vehicle Details</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">
+                                                Saved Date
+                                                <svg className="inline w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                </svg>
+                                            </th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Last Modified</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Status</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Progress</th>
+                                            <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium">Action</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
-
-                    {/* Pagination */}
-                    <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 flex items-center justify-between">
-                        <div className="text-sm text-gray-500">
-                            {activeTab === "warranties"
-                                ? `1-${filteredWarranties.length} of ${filteredWarranties.length} items`
-                                : `1-${filteredSavedForms.length} of ${filteredSavedForms.length} items`}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </button>
-                            <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                            <button className="px-3 py-2 bg-red-600 text-white text-sm rounded">1</button>
-                            {activeTab === "warranties" && (
-                                <>
-                                    <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">2</button>
-                                    <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">3</button>
-                                    <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">4</button>
-                                    <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">5</button>
-                                </>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-200">
+                                        {filteredSavedForms.map((form) => (
+                                            <tr key={form.no} className="hover:bg-gray-50">
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.no}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium text-blue-600">{form.formName}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.customerName}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.vehicleDetails}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.savedDate}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">{form.lastModified}</td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                    <span className={`px-2 py-1 rounded text-xs font-medium ${form.status === "Draft"
+                                                        ? "bg-yellow-100 text-yellow-800"
+                                                        : form.status === "Incomplete"
+                                                            ? "bg-red-100 text-red-800"
+                                                            : "bg-blue-100 text-blue-800"
+                                                        }`}>
+                                                        {form.status}
+                                                    </span>
+                                                </td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-16 bg-gray-200 rounded-full h-2">
+                                                            <div
+                                                                className={`h-2 rounded-full ${form.completionPercentage >= 80 ? 'bg-green-500' :
+                                                                    form.completionPercentage >= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                                                                    }`}
+                                                                style={{ width: `${form.completionPercentage}%` }}
+                                                            ></div>
+                                                        </div>
+                                                        <span className="text-xs text-gray-600">{form.completionPercentage}%</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-3 sm:px-6 py-3 sm:py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <Button variant="outline" size="sm" className="text-xs px-2 py-1">
+                                                            Edit
+                                                        </Button>
+                                                        <Button variant="ghost" size="icon" aria-label="More actions" className="h-8 w-8">
+                                                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                                                            </svg>
+                                                        </Button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             )}
-                            <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                            <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                            <select className="ml-4 border border-gray-300 rounded px-3 py-1 text-sm">
-                                <option>10</option>
-                                <option>20</option>
-                                <option>50</option>
-                            </select>
-                            <span className="text-sm text-gray-500 ml-2">items per page</span>
+                        </div>
+
+                        {/* Pagination */}
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-200 flex items-center justify-between">
+                            <div className="text-sm text-gray-500">
+                                {activeTab === "warranties"
+                                    ? `1-${filteredWarranties.length} of ${filteredWarranties.length} items`
+                                    : `1-${filteredSavedForms.length} of ${filteredSavedForms.length} items`}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50" disabled>
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                                <button className="px-3 py-2 bg-red-600 text-white text-sm rounded">1</button>
+                                {activeTab === "warranties" && (
+                                    <>
+                                        <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">2</button>
+                                        <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">3</button>
+                                        <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">4</button>
+                                        <button className="px-3 py-2 border border-gray-300 text-sm rounded hover:bg-gray-50">5</button>
+                                    </>
+                                )}
+                                <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                                <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                                <select className="ml-4 border border-gray-300 rounded px-3 py-1 text-sm">
+                                    <option>10</option>
+                                    <option>20</option>
+                                    <option>50</option>
+                                </select>
+                                <span className="text-sm text-gray-500 ml-2">items per page</span>
+                            </div>
                         </div>
                     </div>
                 </div>

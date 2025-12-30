@@ -173,7 +173,7 @@ export default function SavedFormsPage() {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-hidden">
         <div className="p-6">
           {/* Tabs */}
           {/* <div className="mb-6">
@@ -234,11 +234,14 @@ export default function SavedFormsPage() {
               </div>
             </div>
 
-            <DataTable
-              data={filteredForms}
-              columns={columns}
-              itemsPerPage={10}
-            />
+            <div className="h-[calc(100vh-240px)] flex flex-col">
+              <DataTable
+                data={filteredForms}
+                columns={columns}
+                itemsPerPage={10}
+              />
+            </div>
+
           </div>
         </div>
 

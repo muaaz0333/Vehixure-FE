@@ -203,64 +203,77 @@ export default function StatsPage() {
 
           {/* Warranty Tab Content */}
           {activeTab === 'warranty' && (
-            <div className="overflow-x-auto">
-              <div className="mb-4 flex gap-2">
-                <div className="flex-1 bg-red-600 text-white text-center py-2 text-xs font-medium">
-                  ERPS
+            <div className="relative max-h-[65vh] overflow-auto">
+
+              {/* STICKY HEADER BLOCK */}
+              <div className="sticky top-0 z-30 bg-white">
+
+                {/* ERPS / ECO-PRO bars */}
+                <div className="mb-2 flex gap-2">
+                  <div className="flex-1 bg-red-600 text-white text-center py-2 text-xs font-medium">
+                    ERPS
+                  </div>
+                  <div className="flex-1 bg-black text-white text-center py-2 text-xs font-medium">
+                    ECO-PRO
+                  </div>
                 </div>
-                <div className="flex-1 bg-black text-white text-center py-2 text-xs font-medium">
-                  ECO-PRO
-                </div>
+
+                {/* Table headers */}
+                <table className="w-full border-collapse">
+                  <thead className="bg-white">
+                    <tr className="border-b border-gray-200">
+                      {[
+                        'Month', 'Agent', 'Total', 'ER 02 212', 'ER 04 212', 'FR 04 212',
+                        'ER 08 212', 'ER 10 212', '?', 'EFP501', 'EFP502', '?'
+                      ].map((label) => (
+                        <th
+                          key={label}
+                          className="py-3 px-4 text-xs font-medium text-gray-600 text-left bg-white"
+                        >
+                          {label}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                </table>
               </div>
+
+              {/* TABLE BODY (scrolls only) */}
               <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Month</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Agent</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Total</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">ER 02 212</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">ER 04 212</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">FR 04 212</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">ER 08 212</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">ER 10 212</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">?</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">EFP501</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">EFP502</th>
-                    <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">?</th>
-                  </tr>
-                </thead>
                 <tbody>
-                  {filteredWarrantyData.map((row: WarrantyData, index) => (
-                    <tr key={row.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">{index === 0 ? row.month : row.id}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{index === 0 ? <span className="text-red-600">{row.agent}</span> : row.agent}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.total}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.er02212}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.er04212}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.fr04212}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.er08212}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.er10212}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.question}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.efp501}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900">{row.efp502}</td>
-                      <td className="py-3 px-4 text-sm text-gray-900 flex items-center justify-between">
-                        {row.question2}
-                        <button className="p-1 hover:bg-gray-200 rounded">
-                          <MoreHorizontal className="w-4 h-4 text-gray-600" />
-                        </button>
+                  {filteredWarrantyData.map((row, index) => (
+                    <tr
+                      key={row.id}
+                      className="border-b border-gray-100 hover:bg-gray-50"
+                    >
+                      <td className="py-3 px-4 text-sm">{index + 1}</td>
+                      <td className="py-3 px-4 text-sm">{row.agent}</td>
+                      <td className="py-3 px-4 text-sm">{row.total}</td>
+                      <td className="py-3 px-4 text-sm">{row.er02212}</td>
+                      <td className="py-3 px-4 text-sm">{row.er04212}</td>
+                      <td className="py-3 px-4 text-sm">{row.fr04212}</td>
+                      <td className="py-3 px-4 text-sm">{row.er08212}</td>
+                      <td className="py-3 px-4 text-sm">{row.er10212}</td>
+                      <td className="py-3 px-4 text-sm">{row.question}</td>
+                      <td className="py-3 px-4 text-sm">{row.efp501}</td>
+                      <td className="py-3 px-4 text-sm">{row.efp502}</td>
+                      <td className="py-3 px-4 text-sm">
+                        <MoreHorizontal className="w-4 h-4 text-gray-600" />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+
             </div>
+
           )}
 
           {/* SCI-Fleet Tab Content */}
           {activeTab === 'sci-fleet' && (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto max-h-[60vh] overflow-y-auto">
               <table className="w-full border-collapse">
-                <thead>
+                <thead className="sticky top-0 z-20 bg-white">
                   <tr className="border-b border-gray-200">
                     <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Month</th>
                     <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Agent</th>
@@ -296,9 +309,9 @@ export default function StatsPage() {
 
           {/* Market Tab Content */}
           {activeTab === 'market' && (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto max-h-[60vh] overflow-y-auto">
               <table className="w-full border-collapse">
-                <thead>
+                <thead className="sticky top-0 z-20 bg-white">
                   <tr className="border-b border-gray-200">
                     <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Region</th>
                     <th className="text-left py-3 px-4 text-xs font-medium text-gray-600">Sales</th>

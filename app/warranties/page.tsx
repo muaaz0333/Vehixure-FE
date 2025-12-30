@@ -39,7 +39,7 @@ const tabs = [
 export default function WarrantiesPage() {
   const { user } = useAuth()
   const isErpsAdmin = user?.role === 'ERPS_ADMIN'
-  
+
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showAgentModal, setShowAgentModal] = useState(false)
   const [selectedAgent, setSelectedAgent] = useState<{
@@ -97,7 +97,7 @@ export default function WarrantiesPage() {
 
       // Check various possible response structures
       const responseData = response as unknown as Record<string, unknown>
-      
+
       if (Array.isArray(responseData.warranties)) {
         // Direct { warranties: [...] } structure
         warrantiesArray = responseData.warranties as typeof warrantiesArray
@@ -115,7 +115,7 @@ export default function WarrantiesPage() {
       }
 
       console.log('Warranties Array:', warrantiesArray) // Debug log
-      
+
       // Transform API data to table format
       const tableData: WarrantyTableItem[] = warrantiesArray.map((w, index) => ({
         id: index + 1,
@@ -129,7 +129,7 @@ export default function WarrantiesPage() {
         status: w.status,
         activated: w.status === 'ACTIVE' || w.verificationStatus === 'VERIFIED' ? 'Y' : 'N'
       }))
-      
+
       console.log('Table Data:', tableData) // Debug log
       setWarranties(tableData)
 
@@ -190,7 +190,7 @@ export default function WarrantiesPage() {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-hidden">
         <div className="p-6">
           {/* Tabs */}
           <div className="mb-4 bg-white">
@@ -221,7 +221,7 @@ export default function WarrantiesPage() {
                 <h2 className="text-xl font-semibold">Warranties</h2>
                 <div className="flex items-center gap-4">
                   {isErpsAdmin && (
-                    <Link 
+                    <Link
                       href="/admin/warranties"
                       className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                     >
@@ -229,7 +229,7 @@ export default function WarrantiesPage() {
                       Admin Verification
                     </Link>
                   )}
-                  <select 
+                  <select
                     className="border border-gray-300 rounded px-3 py-2 text-sm"
                     value={statusFilter}
                     onChange={handleStatusChange}
@@ -251,7 +251,7 @@ export default function WarrantiesPage() {
             ) : error ? (
               <div className="text-center py-12">
                 <div className="text-red-600 mb-2">{error}</div>
-                <button 
+                <button
                   onClick={fetchWarranties}
                   className="text-blue-600 hover:underline"
                 >
@@ -259,11 +259,14 @@ export default function WarrantiesPage() {
                 </button>
               </div>
             ) : (
-              <DataTable
-                data={warranties}
-                columns={columns}
-                itemsPerPage={pagination.limit}
-              />
+              <div className="h-[calc(100vh-240px)] flex flex-col">
+                <DataTable
+                  data={warranties}
+                  columns={columns}
+                  itemsPerPage={pagination.limit}
+                />
+              </div>
+
             )}
           </div>
         </div>

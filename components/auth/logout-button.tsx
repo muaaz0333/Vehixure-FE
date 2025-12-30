@@ -17,7 +17,7 @@ export function LogoutButton() {
       onClick={handleLogout}
       variant="outline"
       size="sm"
-      className="text-red-600 border-red-200 hover:bg-red-50"
+      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
     >
       Logout
     </Button>

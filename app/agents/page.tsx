@@ -229,7 +229,7 @@ export default function AgentsPage() {
           </div>
 
           {/* Alphabet tabs */}
-          <div className="overflow-x-auto -mx-3 px-3 py-2 border-b">
+          <div className="overflow-x-auto -mx-3 px-3 border-b">
             <AlphabetTabs
               activeTab={activeTab}
               onTabChange={handleTabChange}
@@ -237,7 +237,7 @@ export default function AgentsPage() {
           </div>
 
           {/* Data table */}
-          <div className="flex-1 overflow-y-auto border border-gray-200 rounded-lg [&_.pagination]:py-1 [&_.pagination]:text-xs sm:[&_.pagination]:py-3 sm:[&_.pagination]:text-sm">
+          <div className=" mt-2 flex-1 border border-gray-200 rounded-lg overflow-hidden [&_.pagination]:py-1 [&_.pagination]:text-xs sm:[&_.pagination]:py-3 sm:[&_.pagination]:text-sm">
             <DataTable
               columns={columns}
               data={filteredAgents}
