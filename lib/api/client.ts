@@ -126,8 +126,8 @@ class ApiClient {
     try {
       const response = await fetch(url, config)
       
-      // Handle auth errors
-      if (response.status === 401) {
+      // Handle auth errors - but NOT for login endpoint (wrong credentials should show error, not redirect)
+      if (response.status === 401 && !endpoint.includes('/auth/login')) {
         this.handleAuthError()
         throw new Error('Unauthorized')
       }
