@@ -20,19 +20,6 @@ export function Header({ showNavigation = true }: HeaderProps) {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
-            {/* <div className="flex items-center gap-2 sm:gap-3">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 bg-[#FF2D20] rounded flex items-center justify-center text-white font-bold text-xs">
-                <span>ERPS</span>
-              </div>
-              <div className="text-xs leading-tight hidden sm:block">
-                <div className="font-bold">ERPS</div>
-                <div className="text-gray-400">
-                  Enhanced Rust Prevention
-                  <br />
-                  Systems
-                </div>
-              </div>
-            </div> */}
             
               <div className="flex items-center">
                 <Image 

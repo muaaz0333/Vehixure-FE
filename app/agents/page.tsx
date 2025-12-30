@@ -12,6 +12,7 @@ import { SuccessModal } from '@/components/ui/success-modal'
 import { Plus } from 'lucide-react'
 import { usePartnerUsers, useCreatePartnerUser } from '@/lib/hooks/use-partner-accounts'
 import { useAuth } from '@/components/providers/auth-provider'
+import { useRouter } from 'next/navigation'
 
 // Import AgentData type
 interface AgentData {
@@ -56,8 +57,13 @@ export default function AgentsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [page, setPage] = useState(1)
 
-  const { user } = useAuth()
-  
+  const { user, logout } = useAuth()
+  const router = useRouter()
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
   // Fetch partner users (agents)
   const { data, isLoading, error } = usePartnerUsers({
     page,
@@ -75,7 +81,7 @@ export default function AgentsPage() {
     no: index + 1,
     partnerRole: user.partnerRole || 'N/A',
     businessName: user.fullName || 'N/A',
-    installerID: user?.id ? user.id: 'N/A',
+    installerID: user?.id ? user.id : 'N/A',
     email: user.email || 'N/A',
     phone: user.phone || 'N/A',
     status: user.isVerified || 'UNKNOWN',
@@ -189,6 +195,8 @@ export default function AgentsPage() {
             if (!selectedAgent) return
             handleEditAgent(selectedAgent)
           }}
+          user={user}
+          onLogout={handleLogout}
         />
       </div>
 

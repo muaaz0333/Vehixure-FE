@@ -8,6 +8,8 @@ import { PageHeader } from "@/components/ui/page-header"
 import { CreateWarrantyModal } from "@/components/ui/create-warranty-modal"
 import { AgentSelectionModal } from "@/components/ui/agent-selection-modal"
 import { Search } from "lucide-react"
+import { useAuth } from "@/components/providers/auth-provider"
+import { useRouter } from 'next/navigation'
 
 // Mock saved forms data
 const mockSavedForms = [
@@ -157,6 +159,12 @@ export default function SavedFormsPage() {
       value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   )
+    const { user, logout } = useAuth()
+  const router = useRouter()
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
 
   return (
     <div className="h-screen flex flex-col bg-white">
@@ -168,6 +176,8 @@ export default function SavedFormsPage() {
           searchValue={searchTerm}
           onSearchChange={setSearchTerm}
           onAdd={handleCreateWarranty}
+          user={user}
+          onLogout={handleLogout}
         />
 
       </div>

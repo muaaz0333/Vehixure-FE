@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { DataTable } from '@/components/ui/data-table'
 import { PageHeader } from '@/components/ui/page-header'
 import { useState } from 'react'
+import { useAuth } from '@/components/providers/auth-provider'
+import { useRouter } from 'next/navigation'
 
 // Mock data for inspectors
 const inspectorsData = [
@@ -135,6 +137,13 @@ export default function InspectorsPage() {
     )
   })
 
+  const { user, logout } = useAuth()
+  const router = useRouter()
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Page Header */}
@@ -143,6 +152,8 @@ export default function InspectorsPage() {
         showSearch
         onSearchChange={setSearchTerm}
         searchValue={searchTerm}
+        user={user}
+        onLogout={handleLogout}
       />
 
       {/* Sub navigation tabs */}

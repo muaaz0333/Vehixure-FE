@@ -8,6 +8,8 @@ import { PageHeader } from "@/components/ui/page-header"
 import { CreateWarrantyModal } from "@/components/ui/create-warranty-modal"
 import { AgentSelectionModal } from "@/components/ui/agent-selection-modal"
 import { Search } from "lucide-react"
+import { useAuth } from "@/components/providers/auth-provider"
+import { useRouter } from 'next/navigation'
 
 // Mock warranties with corrosion data
 const mockCorrosionWarranties = [
@@ -145,6 +147,13 @@ export default function WarrantiesWithCorrosionPage() {
     )
   )
 
+  const { user, logout } = useAuth()
+  const router = useRouter()
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
+
   return (
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
@@ -155,6 +164,8 @@ export default function WarrantiesWithCorrosionPage() {
           searchValue={searchTerm}
           onSearchChange={setSearchTerm}
           onAdd={handleCreateWarranty}
+          user={user}
+          onLogout={handleLogout}
         />
 
       </div>

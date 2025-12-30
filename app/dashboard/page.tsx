@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/components/providers/auth-provider"
 import { LogoutButton } from "@/components/auth/logout-button"
 import { useDashboardStats } from "@/lib/hooks/use-dashboard"
+import { useRouter } from "next/navigation"
 
 // Dashboard data types based on backend API
 interface WarrantyItemData {
@@ -57,6 +58,25 @@ export default function Dashboard() {
     const [profileOpen, setProfileOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("")
     const { user } = useAuth()
+
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (!(e.target as HTMLElement).closest('.relative')) {
+                setProfileOpen(false)
+            }
+        }
+        document.addEventListener('click', handler)
+        return () => document.removeEventListener('click', handler)
+    }, [])
+
+    const { logout } = useAuth()
+    const router = useRouter()
+
+    const handleLogout = () => {
+        logout()
+        router.push("/login")
+    }
+
 
     // Fetch dashboard stats from your backend API
     const { data: dashboardData, isLoading, error } = useDashboardStats()
@@ -141,20 +161,23 @@ export default function Dashboard() {
                     <div className="relative">
                         <button
                             onClick={() => setProfileOpen(v => !v)}
-                            className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 focus:outline-none"
+                            className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 transition focus:outline-none"
                         >
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span className="text-sm font-medium text-gray-700">
+                            {/* Avatar */}
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
+                                <span className="text-sm font-semibold text-gray-700">
                                     {user?.fullName?.charAt(0) || user?.email?.charAt(0) || 'U'}
                                 </span>
                             </div>
 
-                            <span className="font-medium text-sm hidden sm:block whitespace-nowrap">
+                            {/* Name */}
+                            <span className="font-medium text-sm hidden sm:block max-w-[120px] truncate">
                                 {user?.fullName || user?.email || 'User'}
                             </span>
 
+                            {/* Chevron */}
                             <svg
-                                className={`w-4 h-4 text-gray-400 transition-transform ${profileOpen ? 'rotate-180' : ''
+                                className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${profileOpen ? 'rotate-180' : ''
                                     }`}
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -164,15 +187,62 @@ export default function Dashboard() {
                             </svg>
                         </button>
 
+                        {/* Dropdown */}
                         {profileOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-64 rounded-lg z-50">
-                                <div className="py-1">
-                                    <LogoutButton />
+                            <div className="absolute right-0 mt-3 w-64 origin-top-right rounded-xl bg-white border border-gray-200 shadow-lg z-50 animate-in fade-in zoom-in-95">
+
+                                {/* User Info */}
+                                <div className="px-4 py-3 border-b border-gray-100">
+                                    <p className="text-sm font-medium text-gray-900 truncate">
+                                        {user?.fullName || 'User'}
+                                    </p>
+                                    <p className="text-xs text-gray-500 truncate">
+                                        {user?.email}
+                                    </p>
                                 </div>
+
+                                {/* Actions */}
+                                <div className="p-2">
+                                    <div
+                                        role="button"
+                                        tabIndex={0}
+                                        onClick={() => {
+                                            setProfileOpen(false)
+                                            handleLogout()
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                setProfileOpen(false)
+                                                handleLogout()
+                                            }
+                                        }}
+                                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+               text-sm font-medium text-red-600 hover:bg-red-50
+               transition cursor-pointer select-none"
+                                    >
+                                        {/* Icon */}
+                                        <svg
+                                            className="w-5 h-5 shrink-0"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1m0-10V5"
+                                            />
+                                        </svg>
+
+                                        {/* Text */}
+                                        <span>Logout</span>
+                                    </div>
+                                </div>
+
                             </div>
                         )}
                     </div>
-
                 </div>
             </header>
 
@@ -236,7 +306,7 @@ export default function Dashboard() {
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Vehicle</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Owner</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Installer</th>
-                                                <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Installation Date</th>
+                                                <th className="px-8 lg:px-8 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Installation Date</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Status</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Corrosion</th>
                                                 <th className="px-3 sm:px-6 py-2 sm:py-3 font-medium sticky top-0 bg-gray-50">Action</th>

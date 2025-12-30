@@ -9,6 +9,7 @@ import { AgentSelectionModal } from "@/components/ui/agent-selection-modal"
 import { erpsApi } from "@/lib/api/client"
 import { useAuth } from "@/components/providers/auth-provider"
 import { Shield } from "lucide-react"
+import { useRouter } from 'next/navigation'
 
 interface WarrantyTableItem {
   [key: string]: string | number | boolean
@@ -37,7 +38,12 @@ const tabs = [
 ]
 
 export default function WarrantiesPage() {
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
+  const router = useRouter()
+  const handleLogout = () => {
+    logout()
+    router.push('/login')
+  }
   const isErpsAdmin = user?.role === 'ERPS_ADMIN'
 
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -186,6 +192,8 @@ export default function WarrantiesPage() {
           searchValue={searchTerm}
           onSearchChange={handleSearch}
           onAdd={handleCreateWarranty}
+          user={user}
+          onLogout={handleLogout}
         />
       </div>
 
