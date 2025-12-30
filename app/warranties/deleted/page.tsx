@@ -183,7 +183,7 @@ export default function DeletedWarrantiesPage() {
           searchValue={searchTerm}
           onSearchChange={setSearchTerm}
           onAdd={handleCreateWarranty}
-          user={user}
+          user={user ?? undefined}
           onLogout={handleLogout}
         />
 

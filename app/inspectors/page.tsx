@@ -152,7 +152,7 @@ export default function InspectorsPage() {
         showSearch
         onSearchChange={setSearchTerm}
         searchValue={searchTerm}
-        user={user}
+        user={user ?? undefined}
         onLogout={handleLogout}
       />
 

@@ -203,7 +203,7 @@ export default function AgentsPage() {
             if (!selectedAgent) return
             handleEditAgent(selectedAgent)
           }}
-          user={user}
+          user={user ?? undefined}
           onLogout={handleLogout}
         />
       </div>

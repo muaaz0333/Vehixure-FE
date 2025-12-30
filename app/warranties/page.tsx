@@ -192,7 +192,7 @@ export default function WarrantiesPage() {
           searchValue={searchTerm}
           onSearchChange={handleSearch}
           onAdd={handleCreateWarranty}
-          user={user}
+          user={user ?? undefined}
           onLogout={handleLogout}
         />
       </div>
