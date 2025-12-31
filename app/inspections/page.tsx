@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, MoreHorizontal, ChevronDown } from 'lucide-react'
+import { Search, MoreHorizontal, ChevronDown, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/components/providers/auth-provider'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { RecordInspectionModal } from '@/components/shared/record-inspection-modal'
+import { cn } from '@/lib/utils'
 
 
 // Mock data for inspections
@@ -231,11 +232,18 @@ export default function InspectionsPage() {
               </div>
 
               <Button
-                onClick={() => setShowRecordInspection(!showRecordInspection)}
-                className="bg-red-600 hover:bg-red-700 text-white"
+                onClick={() => setShowRecordInspection(true)}
+                disabled={showRecordInspection}
+                className={cn(
+                  "text-white transition",
+                  showRecordInspection
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700"
+                )}
               >
                 Record Inspection
               </Button>
+
 
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">Sample Inspection Sheet</span>
@@ -337,7 +345,19 @@ export default function InspectionsPage() {
       {showRecordInspection && (
         <div className="bg-red-50 border-b border-red-200">
           <div className="px-6 py-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Record Inspection</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">
+                Record Inspection
+              </h2>
+
+              <button
+                onClick={() => setShowRecordInspection(false)}
+                className="text-gray-400 hover:text-gray-600 transition"
+                aria-label="Close Record Inspection"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 w-full">
               <span className="text-sm text-gray-600 whitespace-nowrap">
                 Search for :
@@ -452,9 +472,9 @@ export default function InspectionsPage() {
                     <td className="py-3 px-4 text-sm text-gray-900">{inspection.model}</td>
                     <td className="py-3 px-4 text-sm text-gray-900">{inspection.registration}</td>
                     <td className="py-3 px-4">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className="p-1"
                         onClick={() => handleRecordInspection(inspection)}
                         title="Record Inspection"

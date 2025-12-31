@@ -7,6 +7,7 @@ import { useAuth } from "@/components/providers/auth-provider"
 import { useRouter } from 'next/navigation'
 import { Search } from "lucide-react"
 import { RecordInspectionModal } from "@/components/shared/record-inspection-modal"
+import { cn } from "@/lib/utils"
 
 const upcomingInspectionData = [
     {
@@ -200,7 +201,13 @@ export default function AgentInspections() {
 
                     <Button
                         onClick={handleRecordInspection}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 text-sm"
+                        disabled={showRecordInspection}
+                        className={cn(
+                            "text-white transition",
+                            showRecordInspection
+                                ? "bg-gray-500 cursor-not-allowed"
+                                : "bg-red-600 hover:bg-red-700"
+                        )}
                     >
                         Record Inspection
                     </Button>
