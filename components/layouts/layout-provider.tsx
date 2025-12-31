@@ -40,7 +40,7 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
   // Agent layout with agent sidebar
   if (isAgentRoute) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex h-screen bg-gray-50 overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block shrink-0">
           <AgentSidebar />
@@ -62,7 +62,7 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
           </div>
           
           {/* Main Content */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
             {children}
           </div>
         </div>
@@ -73,7 +73,7 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
   // Dashboard layout with sidebar
   if (isDashboardRoute) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex h-screen bg-gray-50 overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block shrink-0">
           <Sidebar />
@@ -95,7 +95,7 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
           </div>
           
           {/* Main Content */}
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
             {children}
           </div>
         </div>

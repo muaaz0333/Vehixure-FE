@@ -28,7 +28,7 @@ export function Header({ showNavigation = true }: HeaderProps) {
 
 
   return (
-    <header className="bg-[#131313] text-white">
+    <header className="bg-[#131313] text-white sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">

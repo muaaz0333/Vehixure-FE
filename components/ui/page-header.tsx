@@ -59,7 +59,7 @@ export function PageHeader({
   }
 
   return (
-    <div className="bg-white  px-4 sm:px-6 py-3">
+    <div className="bg-white px-4 sm:px-6 py-3 sticky top-0 z-30">
       {/* Top row */}
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-base sm:text-xl font-semibold text-gray-900 truncate">
