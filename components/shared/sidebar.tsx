@@ -113,23 +113,10 @@ export function Sidebar({ onClose }: SidebarProps) {
   "
     >
       {/* Mobile Close Button */}
-      {onClose && (
-        <div className="lg:hidden flex justify-end px-4 pb-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="text-white hover:bg-gray-800 p-2 rounded-full"
-            aria-label="Close sidebar"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
-
       {/* Logo */}
       <div className="px-6 pb-4 border-b border-gray-700 shrink-0">
-        <div className="flex items-center justify-center lg:justify-start">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           <Image
             src="/images/logo.png"
             alt="WarrantyDB Logo"
@@ -137,8 +124,22 @@ export function Sidebar({ onClose }: SidebarProps) {
             height={45}
             className="h-8 w-auto max-w-full"
           />
+
+          {/* Close button (mobile only) */}
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="lg:hidden text-white hover:bg-gray-800 p-2 rounded-full"
+              aria-label="Close sidebar"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          )}
         </div>
       </div>
+
 
       {/* Navigation */}
       <nav className="flex-1 mt-6 overflow-y-auto px-2">

@@ -132,12 +132,12 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
           isActive: true
         })
         setFieldErrors({})
-        
+
         // Call success callback to refresh the list
         if (onSuccess) {
           onSuccess()
         }
-        
+
         onClose()
       } else {
         setError(response.message || "Failed to create warranty terms")
@@ -167,11 +167,14 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Add Terms and Conditions</h2>
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg w-full max-w-2xl mx-4 h-[90vh] flex flex-col shadow-xl">
+
+        {/* Header – FIXED */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Add Terms and Conditions
+          </h2>
           <button
             onClick={handleClose}
             className="text-gray-400 hover:text-gray-600"
@@ -181,7 +184,7 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
           {/* Error Message */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
@@ -192,7 +195,7 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
           {/* Warranty Details Section */}
           <div>
             <h3 className="text-red-600 font-medium mb-4">Warranty Details</h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -294,20 +297,19 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
                 <div className="relative">
                   <button
                     onClick={() => setIsAgentDropdownOpen(!isAgentDropdownOpen)}
-                    className={`w-full flex items-center justify-between px-3 py-2 border rounded-md text-left text-sm focus:outline-none focus:ring-2 focus:ring-red-500 ${
-                      fieldErrors.addType ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`w-full flex items-center justify-between px-3 py-2 border rounded-md text-left text-sm focus:outline-none focus:ring-2 focus:ring-red-500 ${fieldErrors.addType ? "border-red-500" : "border-gray-300"
+                      }`}
                   >
                     <span className={formData.addType ? "text-gray-900" : "text-gray-500"}>
-                      {formData.addType === "ADD_WARRANTY" 
-                        ? "Add Warranty" 
+                      {formData.addType === "ADD_WARRANTY"
+                        ? "Add Warranty"
                         : formData.addType === "REPLACE_WARRANTY"
-                        ? "Replace Warranty"
-                        : "Select Type"}
+                          ? "Replace Warranty"
+                          : "Select Type"}
                     </span>
                     <ChevronDown className="w-4 h-4 text-gray-400" />
                   </button>
-                  
+
                   {isAgentDropdownOpen && (
                     <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
                       <div className="py-1">
@@ -360,7 +362,7 @@ export function AddTermsModal({ isOpen, onClose, onSuccess }: AddTermsModalProps
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 p-6 border-t border-gray-200">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 shrink-0 bg-white">
           <Button
             variant="outline"
             onClick={handleClose}

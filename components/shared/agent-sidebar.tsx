@@ -77,31 +77,33 @@ export function AgentSidebar({ onClose }: AgentSidebarProps) {
   "
     >
       {/* Mobile Close Button */}
-      {onClose && (
-        <div className="lg:hidden flex justify-end p-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClose}
-            className="text-white hover:bg-gray-800 p-2"
-          >
-            <X className="h-5 w-5" />
-          </Button>
-        </div>
-      )}
-
       {/* Logo */}
-      <div className="px-6 pb-4 border-b border-gray-700">
-        <div className="flex items-center">
+      <div className="px-6 pb-4 border-b border-gray-700 shrink-0">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
           <Image
             src="/images/logo.png"
             alt="WarrantyDB Logo"
             width={118}
-            height={40}
-            className="h-6 w-auto sm:h-10"
+            height={45}
+            className="h-8 w-auto max-w-full"
           />
+
+          {/* Close button (mobile only) */}
+          {onClose && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="lg:hidden text-white hover:bg-gray-800 p-2 rounded-full"
+              aria-label="Close sidebar"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          )}
         </div>
       </div>
+
 
       {/* Navigation */}
       <nav className="flex-1 mt-6 overflow-y-auto">
