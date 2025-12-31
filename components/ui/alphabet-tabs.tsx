@@ -11,18 +11,16 @@ const alphabet = ['ALL', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')]
 
 export function AlphabetTabs({ activeTab, onTabChange }: AlphabetTabsProps) {
   return (
-    <div className="w-full overflow-hidden">
-      <div
-        className="
-          flex flex-nowrap
-          w-full
-          justify-between
-          gap-[2px]
-          border rounded-lg
-          bg-white
-          py-2 px-2
-        "
-      >
+    <div className="hidden sm:block w-full overflow-hidden">
+      <div className="
+        flex flex-nowrap
+        w-full
+        justify-between
+        gap-[2px]
+        border rounded-lg
+        bg-white
+        py-2 px-2
+      ">
         {alphabet.map((letter) => (
           <button
             key={letter}

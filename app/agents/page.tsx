@@ -246,7 +246,7 @@ export default function AgentsPage() {
           </div>
 
           {/* Alphabet tabs */}
-          <div className="overflow-x-auto -mx-3 px-3 border-b">
+          <div className="hidden sm:block overflow-x-auto -mx-3 px-3 border-b">
             <AlphabetTabs
               activeTab={activeTab}
               onTabChange={handleTabChange}
