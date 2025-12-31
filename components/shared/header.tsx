@@ -99,36 +99,36 @@ export function Header({ showNavigation = true }: HeaderProps) {
             />
 
             {/* Drawer */}
-            <div className="fixed top-0 right-0 z-50 h-full w-[85%] max-w-sm bg-white text-white shadow-2xl
+            <div className="fixed top-0 right-0 z-50 h-full w-[78%] max-w-sm bg-[#131313] text-white shadow-2xl
                     animate-in slide-in-from-right duration-300">
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
-                <span className="text-lg text-black font-semibold">Menu</span>
+                <span className="text-lg font-semibold">Menu</span>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2 rounded-lg hover:bg-gray-800 transition"
                 >
-                  <X className="h-5 w-5 stroke-black" />
+                  <X className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Links */}
               <nav className="flex flex-col px-5 py-6 gap-3">
                 <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full text-left px-4 py-3 rounded-4xl bg-[#E31D1C] hover:bg-gray-800 transition text-sm font-medium">
+                  <button className="w-full text-left px-4 py-3 rounded-4xl bg-[#E31D1C] hover:bg-red transition text-sm font-medium">
                     Agent Login
                   </button>
                 </Link>
 
                 <Link href="/activate-warranty" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full text-left px-4 py-3 rounded-4xl bg-[#E31D1C] hover:bg-gray-800 transition text-sm font-medium">
+                  <button className="w-full text-left px-4 py-3 rounded-4xl bg-[#E31D1C] hover:bg-red transition text-sm font-medium">
                     Activate Warranty
                   </button>
                 </Link>
               </nav>
 
               {/* Footer */}
-              <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t bg-black border-gray-800 text-xs text-gray-400">
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-gray-800 text-xs text-gray-400">
                 © {new Date().getFullYear()} WarrantyDB
               </div>
             </div>
