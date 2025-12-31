@@ -344,16 +344,22 @@ export default function LandingPage() {
                   key={idx}
                   type="button"
                   onClick={() => setActiveIndex(idx)}
-                  className={`relative text-left rounded-2xl border transition-all duration-200 overflow-visible
-    ${active ? "bg-[#E31D1C] text-white border-transparent" : "bg-gray-100 text-black border-border"}
-  `}
+                  className="
+    group relative text-left rounded-2xl border overflow-visible
+    bg-gray-100 text-black border-border
+    transition-all duration-200
+    hover:bg-[#E31D1C] hover:text-white hover:border-transparent
+  "
                 >
                   <div
-                    className={`absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2
+                    className="
+      absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2
       w-19 h-19 rounded-full flex items-center justify-center
       border-4 border-white
-      ${active ? "bg-[#E31D1C] text-white" : "bg-muted text-red-500"}
-    `}
+      bg-muted text-red-500
+      transition-colors
+      group-hover:bg-[#E31D1C] group-hover:text-white
+    "
                   >
                     <ArrowIcon />
                   </div>
@@ -361,7 +367,7 @@ export default function LandingPage() {
                   {/* here */}
                   <div className="pl-10 pt-10 pb-10 pr-6">
                     <h3 className="text-lg font-bold mb-3 mt-5">{item.title}</h3>
-                    <p className={`text-sm leading-relaxed ${active ? "text-white/90" : "text-muted-foreground"}`}>
+                    <p className="text-sm leading-relaxed text-muted-foreground group-hover:text-white/90">
                       {item.description}
                     </p>
                   </div>
@@ -473,7 +479,7 @@ export default function LandingPage() {
                   <button
                     type="button"
                     onClick={() => setExpandedFaq(isOpen ? null : idx)}
-                    className="w-full flex items-center justify-between px-6 py-5 text-left"
+                    className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer"
                   >
                     <h3 className="lg:text-xl sm:text-lg font-semibold text-black">
                       {item.title}
@@ -543,7 +549,7 @@ export default function LandingPage() {
                   <button
                     type="button"
                     onClick={() => setOpenIndex(open ? null : idx)}
-                    className="w-full flex items-center justify-between gap-4 px-6 py-1 text-left"
+                    className="w-full flex items-center justify-between gap-4 px-6 py-1 text-left cursor-pointer"
                   >
                     <span className="sm:text-lg lg:text-xl font-medium">
                       {item.q}
