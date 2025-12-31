@@ -7,6 +7,8 @@ import { Footer } from '@/components/shared/footer'
 import { Sidebar } from '@/components/shared/sidebar'
 import { AgentSidebar } from '@/components/shared/agent-sidebar'
 import { MobileHeader } from '@/components/shared/mobile-header'
+import { MobileSidebarDrawer } from '@/components/layouts/MobileSidebarDrawer'
+import { MobileAgentSidebarDrawer } from '@/components/layouts/MobileAgentSidebarDrawer'
 
 interface LayoutProviderProps {
   children: React.ReactNode
@@ -44,18 +46,11 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
           <AgentSidebar />
         </div>
         
-        {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div 
-              className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <div className="fixed left-0 top-0 h-screen w-[285px] max-w-[85vw] bg-[#1a1a1a] shadow-lg rounded-tr-[20px] rounded-br-[20px] transform transition-transform duration-300 ease-in-out">
-              <AgentSidebar onClose={() => setIsSidebarOpen(false)} />
-            </div>
-          </div>
-        )}
+        {/* Mobile Sidebar Drawer */}
+        <MobileAgentSidebarDrawer 
+          open={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+        />
 
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           {/* Mobile Header */}
@@ -84,18 +79,11 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
           <Sidebar />
         </div>
         
-        {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div 
-              className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-            <div className="fixed left-0 top-0 h-screen w-[285px] max-w-[85vw] bg-[#1a1a1a] shadow-lg rounded-tr-[20px] rounded-br-[20px] transform transition-transform duration-300 ease-in-out">
-              <Sidebar onClose={() => setIsSidebarOpen(false)} />
-            </div>
-          </div>
-        )}
+        {/* Mobile Sidebar Drawer */}
+        <MobileSidebarDrawer 
+          open={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+        />
 
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           {/* Mobile Header */}
